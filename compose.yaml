@@ -10,15 +10,3 @@ services:
     # Copy the configuration file to the container
     volumes:
       - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
-
-  data_forwarder:
-    build:
-        context: .
-        dockerfile: Dockerfile
-    privileged: true
-    container_name: serial_data_forwarder
-    environment:
-      MQTT_BROKER: broker
-
-    devices:
-      - "/dev:/dev"

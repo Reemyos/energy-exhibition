@@ -1,4 +1,6 @@
 import time
+import random
+
 import serial
 import subprocess
 import re
@@ -43,12 +45,10 @@ def send_data(port1, baud_rate):
         print(f"Successfully connected to {sending_port}")
 
         # Send data every second
-        i = 0
         while True:
-            message = f"Simulated sensor data {i}\n"
+            message = f"{random.randint(0, 10)}\n"
             ser.write(message.encode('utf-8'))
             print(f"Sent: {message.strip()}")
-            i += 1
             time.sleep(1)
 
     except serial.SerialException as e:

@@ -1,5 +1,4 @@
 import logging
-import os
 import serial
 
 from data_forwarder import DataForwarder
@@ -9,14 +8,14 @@ logger = logging.getLogger(__name__)
 
 
 class SerialDataForwarder(DataForwarder):
-    def __init__(self, serial_port='rfc2217://127.0.0.1:4000', baud_rate=115200, mqtt_broker=os.getenv('MQTT_BROKER', 'localhost'),
+    def __init__(self, serial_port='/dev/ttys006', baud_rate=9600, mqtt_broker='localhost',
                  mqtt_port=1883, mqtt_topic='sensor/data'):
+        super().__init__(mqtt_broker, mqtt_port, mqtt_topic)
         try:
             self._serial_port = serial.Serial(serial_port, baud_rate, timeout=1)
         except serial.serialutil.SerialException:
             logger.error(f"Serial port {serial_port} not found.")
             exit(1)
-        super().__init__(mqtt_broker, mqtt_port, mqtt_topic)
 
     def start(self):
         logger.info("Starting data forwarding...")
