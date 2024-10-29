@@ -5,6 +5,8 @@ import serial
 import subprocess
 import re
 
+MESSAGE_DELAY = 0.4
+
 
 def create_virtual_serial_ports():
     # Run socat command to create virtual serial ports
@@ -44,12 +46,22 @@ def send_data(port1, baud_rate):
         ser = serial.Serial(sending_port, baudrate=baud_rate, timeout=1)
         print(f"Successfully connected to {sending_port}")
 
-        # Send data every second
+        value = 0  # Start at 0
         while True:
-            message = f"{random.randint(0, 10)}\n"
+            # If value is at max, reset to 0 randomly to avoid predictable patterns
+            if value >= 10:
+                if random.random() < 0.3:  # 30% chance to reset to 0
+                    value = 0
+                else:
+                    value = 10  # Hold 10 for some cycles without reset
+            else:
+                # Increment value by 0 or 1 to keep it non-decreasing
+                value += random.choice([0, 1])
+
+            message = f"{value}\n"
             ser.write(message.encode('utf-8'))
             print(f"Sent: {message.strip()}")
-            time.sleep(1)
+            time.sleep(MESSAGE_DELAY)
 
     except serial.SerialException as e:
         print(f"Error with serial connection: {e}")

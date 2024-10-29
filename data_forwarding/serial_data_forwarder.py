@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 
 class SerialDataForwarder(DataForwarder):
-    def __init__(self, serial_port='/dev/ttys006', baud_rate=9600, mqtt_broker='localhost',
+    def __init__(self, serial_port='/dev/ttys001', baud_rate=9600, mqtt_broker='localhost',
                  mqtt_port=1883, mqtt_topic='sensor/data'):
         super().__init__(mqtt_broker, mqtt_port, mqtt_topic)
         try:
