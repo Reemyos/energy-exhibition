@@ -91,11 +91,7 @@ const App = () => {
             x: {
                 beginAtZero: true,
                 min: 0,
-                max: 1,
-                title: {
-                    display: true,
-                    text: 'זמן',
-                },
+                max: 1
             }
         },
         responsive: true,
@@ -122,7 +118,7 @@ const App = () => {
     };
 
     const gaugeChart = (
-        <div style={{height: '100%', aspectRatio: 1, display: 'flex', justifyContent: 'center'}}>
+        <div style={{height: '100%', aspectRatio: 1, display: 'flex', justifyContent: 'center', marginTop: '10%'}}>
             <GoogleChart
                 chartType="Gauge"
                 data={gaugeData}
@@ -140,12 +136,22 @@ const App = () => {
         </div>
     );
 
-    const gaugeAndBar = (
-        <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-            {gaugeChart}
-            {barChart}
+    function gaugeAndBar(gaugeTitle, barTitle) {
+        return <div style={{display: 'grid', justifyItems: 'center'}}>
+            <div style={{gridRow: 1, gridColumn: 1}}>
+                {gaugeTitle}
+            </div>
+            <div style={{gridRow: 2, gridColumn: 1, marginTop: '5%'}}>
+                {gaugeChart}
+            </div>
+            <div style={{gridRow: 1, gridColumn: 2, marginLeft: '15%'}}>
+                {barTitle}
+            </div>
+            <div style={{gridRow: 2, gridColumn: 2}}>
+                {barChart}
+            </div>
         </div>
-    );
+    }
 
     return (
         <div className={'App-container'}>

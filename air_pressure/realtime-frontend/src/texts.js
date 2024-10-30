@@ -23,9 +23,9 @@ const hebrewExplanation =
         היא דוגמה יפה.
     </p>;
 
-const hebrewGaugeTitle = <h1 className={'Hebrew'}>הלחץ במיכל כעת:</h1>;
+const hebrewGaugeTitle = <h1 className={'Hebrew'}>הלחץ במיכל:</h1>;
 
-const hebrewEnergyTitle = <h1 className={'Hebrew'}>האנרגיה לאורך זמן במיכל:</h1>;
+const hebrewEnergyTitle = <h1 className={'Hebrew'}>האנרגיה במיכל:</h1>;
 
 export const texts = {
     'Hebrew': {
@@ -61,8 +61,7 @@ export function fillTextAccordingToLanguage(language, gaugeAndBar) {
             {texts[language].explanation}
             {texts[language].instructionsTitle}
             {texts[language].instructions}
-            {texts[language].gaugeTitle}
-            {gaugeAndBar}
+            {gaugeAndBar(texts[language].gaugeTitle, texts[language].energyTitle)}
             {/*{texts[language].energyTitle}*/}
             {/*{barChart}*/}
         </>
