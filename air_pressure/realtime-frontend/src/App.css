@@ -36,3 +36,17 @@
     transform: rotate(360deg);
   }
 }
+
+.App-container {
+  background-color: #fafafa;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.Hebrew {
+  direction: rtl;
+}
