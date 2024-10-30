@@ -6,6 +6,7 @@ services:
     # Expose the MQTT port
     ports:
       - "1883:1883"
+      - "9001:9001"
 
     # Copy the configuration file to the container
     volumes:

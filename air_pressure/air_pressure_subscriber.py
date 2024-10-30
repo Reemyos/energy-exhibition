@@ -27,8 +27,8 @@ class AirPressureSubscriber(MQTTSubscriber):
         self.current_value = int(air_pressure)
         if self.echart:
             self.echart.options['series'][0]['data'] = [[i - 0.5, value] for i, value in enumerate(self._data_buffer, 1)]
-            self.echart.update()
+            self.echart.view.update()
         if self.high_chart:
             self.high_chart.options['series'][0]['data'] = [self.current_value]
-            self.high_chart.update()
+            self.high_chart.view.update()
         logger.info(f"Air pressure: {air_pressure} hPa")
