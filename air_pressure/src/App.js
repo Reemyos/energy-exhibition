@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {Bar} from 'react-chartjs-2';
-import mqtt from 'mqtt';
 import {Chart as GoogleChart} from 'react-google-charts';
 import {Chart, registerables} from 'chart.js';
 import './App.css'
@@ -18,7 +17,7 @@ export function getGaugeData(currentPressure) {
 
 
 const App = () => {
-    const [dataPoints, setDataPoints] = useState([]);
+    const [dataPoint, setDataPoint] = useState([0]);
     const [gaugeData, setGaugeData] = useState(getGaugeData(0));
     const [currentLanguageIndex, setIndex] = useState(0)
 
@@ -29,44 +28,39 @@ const App = () => {
     }
 
     useEffect(() => {
-        const client = mqtt.connect('ws://localhost:9001'); // Change if needed
+        const ws = new WebSocket('ws://localhost:9001');
 
-        client.on('connect', () => {
-            console.log('Connected to MQTT broker');
-            client.subscribe('sensor/data', (err) => {
-                if (!err) {
-                    console.log('Subscribed to sensor/data topic');
-                }
-            });
-        });
+        ws.onopen = () => {
+            console.log('Connected to WebSocket server');
+        };
 
-        client.on('message', (topic, message) => {
-            const newDataPoint = parseFloat(message.toString());
-            // Keep only the last 10 data points
-            setDataPoints((prevDataPoints) => {
-                prevDataPoints.push(newDataPoint);
-                return prevDataPoints.length >= 1 ? prevDataPoints.slice(-1) : newDataPoint;
-            });
+        ws.onmessage = (event) => {
+            const newDataPoint = parseFloat(event.data);
+            setDataPoint([newDataPoint]);
             setGaugeData(getGaugeData(newDataPoint));
-        });
+        };
+
+        ws.onclose = () => {
+            console.log('Disconnected from WebSocket server');
+        };
 
         return () => {
-            client.end();
+            ws.close();
         };
     }, []);
 
     const chartData = {
-        labels: dataPoints.map((_, index) => index + 1),
+        labels: dataPoint.map((_, index) => index + 1),
         datasets: [
             {
                 label: 'Pressure',
-                data: dataPoints,
-                backgroundColor: dataPoints.map(point => {
+                data: dataPoint,
+                backgroundColor: dataPoint.map(point => {
                     if (point >= 8) return 'rgba(81, 255, 150, 0.2)'; // Green
                     if (point >= 6) return 'rgba(255, 206, 86, 0.2)'; // Yellow
                     return 'rgba(75, 192, 192, 0.2)'; // Default (light blue)
                 }),
-                borderColor: dataPoints.map(point => {
+                borderColor: dataPoint.map(point => {
                     if (point >= 8) return 'rgba(81, 255, 150, 1)'; // Green
                     if (point >= 6) return 'rgba(255, 206, 86, 1)'; // Yellow
                     return 'rgba(75, 192, 192, 1)'; // Default (blue)
