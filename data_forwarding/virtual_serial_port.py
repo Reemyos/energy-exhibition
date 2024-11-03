@@ -1,3 +1,4 @@
+import logging
 import time
 import random
 
@@ -6,6 +7,9 @@ import subprocess
 import re
 
 MESSAGE_DELAY = 0.4
+
+
+logger = logging.getLogger(__name__)
 
 
 def create_virtual_serial_ports():
@@ -19,7 +23,7 @@ def create_virtual_serial_ports():
     port1, port2 = None, None
     for line in socat_process.stderr:
         decoded_line = line.decode("utf-8")
-        print(decoded_line.strip())  # Print socat output for visibility
+        logger.info(decoded_line.strip())  # Print socat output for visibility
 
         # Use regex to capture the PTY device paths
         match = re.search(r'PTY is (/dev/ttys[0-9]+)', decoded_line)
@@ -31,7 +35,7 @@ def create_virtual_serial_ports():
                 break  # Exit once both ports are captured
 
     if port1 and port2:
-        print(f"Virtual serial ports created: {port1}, {port2}")
+        logger.info(f"Virtual serial ports created: {port1}, {port2}")
     else:
         raise RuntimeError("Failed to create virtual serial ports with socat.")
 
@@ -44,7 +48,7 @@ def send_data(port1, baud_rate):
         # Use port1 to send data
         sending_port = port1
         ser = serial.Serial(sending_port, baudrate=baud_rate, timeout=1)
-        print(f"Successfully connected to {sending_port}")
+        logger.info(f"Successfully connected to {sending_port}")
 
         value = 0  # Start at 0
         while True:
@@ -60,13 +64,13 @@ def send_data(port1, baud_rate):
 
             message = f"{value}\n"
             ser.write(message.encode('utf-8'))
-            print(f"Sent: {message.strip()}")
+            logger.info(f"Sent: {message.strip()}")
             time.sleep(MESSAGE_DELAY)
 
     except serial.SerialException as e:
-        print(f"Error with serial connection: {e}")
+        logger.error(f"Error with serial connection: {e}")
     except KeyboardInterrupt:
-        print("\nInterrupted by user. Closing connections.")
+        logger.error("\nInterrupted by user. Closing connections.")
 
 
 if __name__ == "__main__":

@@ -8,6 +8,7 @@ import websockets
 
 import virtual_serial_port  # Assumed to contain virtual serial port functions
 
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
@@ -37,6 +38,8 @@ async def websocket_handler(websocket, path, serial_connection):
             await asyncio.sleep(0.4)  # Adjust to avoid CPU hogging
     except websockets.ConnectionClosed:
         logger.info("Client disconnected")
+    except serial.serialutil.SerialException:
+        logger.exception("Serial connection shut down")
 
 
 async def main():
@@ -49,7 +52,7 @@ async def main():
         serial_connection = serial.Serial(port2, 9600)  # Connect to the virtual port
 
     # Start the WebSocket server
-    print("Starting WebSocket server on ws://localhost:9001")
+    logger.info("Starting WebSocket server on ws://localhost:9001")
     async with websockets.serve(lambda ws, path: websocket_handler(ws, path, serial_connection), "localhost", 9001):
         await asyncio.Future()  # Keep server running indefinitely
 
@@ -57,5 +60,7 @@ async def main():
 if __name__ == "__main__":
     try:
         asyncio.run(main())
+    except asyncio.exceptions.CancelledError:
+        logger.error("Server stopped.")
     except KeyboardInterrupt:
-        print("Server stopped.")
+        logger.error("Server stopped.")
