@@ -6,7 +6,7 @@ import serial
 import serial.tools.list_ports
 import websockets
 
-import virtual_serial_port  # Assumed to contain virtual serial port functions
+from virtual_serial_port import create_virtual_serial_ports, send_data
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -36,10 +36,10 @@ async def websocket_handler(websocket, path, serial_connection):
                 await websocket.send(data)
                 logger.info(f"Sent: {data}")
             await asyncio.sleep(0.4)  # Adjust to avoid CPU hogging
+    except serial.serialutil.SerialException:
+        logger.error("Serial connection shut down")
     except websockets.ConnectionClosed:
         logger.info("Client disconnected")
-    except serial.serialutil.SerialException:
-        logger.exception("Serial connection shut down")
 
 
 async def main():
@@ -47,13 +47,16 @@ async def main():
     serial_connection = find_arduino_port()
     if not serial_connection:
         logger.info("No Arduino found. Starting Virtual Serial Port...")
-        port1, port2, socat_process = virtual_serial_port.create_virtual_serial_ports()
-        multiprocessing.Process(target=virtual_serial_port.send_data, args=(port1, 9600)).start()
+        # Add logging around these functions to confirm their status
+        logger.info("Attempting to create virtual serial ports.")
+        port1, port2, socat_process = create_virtual_serial_ports()
+        logger.info("Virtual serial ports created successfully.")
+        multiprocessing.Process(target=send_data, args=(port1, 9600)).start()
         serial_connection = serial.Serial(port2, 9600)  # Connect to the virtual port
 
     # Start the WebSocket server
-    logger.info("Starting WebSocket server on ws://localhost:9001")
-    async with websockets.serve(lambda ws, path: websocket_handler(ws, path, serial_connection), "localhost", 9001):
+    logger.info("Starting WebSocket server on ws://0.0.0.0:9001")
+    async with websockets.serve(lambda ws, path: websocket_handler(ws, path, serial_connection), '0.0.0.0', 9001):
         await asyncio.Future()  # Keep server running indefinitely
 
 # Run the main function

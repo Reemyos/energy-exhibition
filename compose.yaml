@@ -1,0 +1,23 @@
+services:
+  serial_to_websocket:
+    build: data_forwarding/.
+    container_name: serial_to_websocket
+    restart: unless-stopped
+    devices:
+      - "/dev:/dev"
+    #    privileged: true # Grants extended privileges (use with caution)
+    environment:
+      - PYTHONUNBUFFERED=1
+    ports:
+      - "9001:9001"  # Expose the WebSocket server port
+    network_mode: bridge
+
+
+  air_pressure:
+    build: air_pressure/.
+    container_name: air_pressure
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    network_mode: bridge

@@ -12,7 +12,7 @@ MESSAGE_DELAY = 0.4
 logger = logging.getLogger(__name__)
 
 
-def create_virtual_serial_ports():
+def create_virtual_serial_ports(timeout=5):
     # Run socat command to create virtual serial ports
     socat_process = subprocess.Popen(
         ["socat", "-d", "-d", "pty,raw,echo=0", "pty,raw,echo=0"],
@@ -21,22 +21,30 @@ def create_virtual_serial_ports():
 
     # Read output to capture port names
     port1, port2 = None, None
-    for line in socat_process.stderr:
+    start_time = time.time()
+
+    # Loop to capture output with a timeout
+    while time.time() - start_time < timeout:
+        line = socat_process.stderr.readline()
+        if not line:
+            break  # Exit if there's no more output
+
         decoded_line = line.decode("utf-8")
         logger.info(decoded_line.strip())  # Print socat output for visibility
 
-        # Use regex to capture the PTY device paths
-        match = re.search(r'PTY is (/dev/ttys[0-9]+)', decoded_line)
+        # Use regex to capture PTY device paths
+        match = re.search(r'PTY is (/dev/pts/[0-9]+)', decoded_line)
         if match:
             if not port1:
                 port1 = match.group(1)
-            else:
+            elif not port2:
                 port2 = match.group(1)
                 break  # Exit once both ports are captured
 
     if port1 and port2:
         logger.info(f"Virtual serial ports created: {port1}, {port2}")
     else:
+        socat_process.terminate()  # Stop socat if ports weren't created in time
         raise RuntimeError("Failed to create virtual serial ports with socat.")
 
     return port1, port2, socat_process
