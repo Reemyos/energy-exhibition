@@ -11,7 +11,7 @@ Chart.register(...registerables);
 export function getGaugeData(currentPressure) {
     return [
         ["Label", "Value"],
-        ["Bar", currentPressure],
+        ["KPA", currentPressure],
     ];
 }
 

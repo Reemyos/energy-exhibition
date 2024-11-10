@@ -6,8 +6,6 @@ services:
     devices:
       - "/dev:/dev"
     #    privileged: true # Grants extended privileges (use with caution)
-    environment:
-      - PYTHONUNBUFFERED=1
     ports:
       - "9001:9001"  # Expose the WebSocket server port
     network_mode: bridge

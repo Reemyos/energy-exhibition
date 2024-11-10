@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import multiprocessing
+import time
 
 import serial
 import serial.tools.list_ports
@@ -16,10 +17,12 @@ logger = logging.getLogger(__name__)
 def find_arduino_port(baud_rate=9600):
     ports = serial.tools.list_ports.comports()
     for port in ports:
-        if "Arduino" in port.description or "ttyACM" in port.device or "ttyUSB" in port.device:
+        if ("Arduino" in port.description or "ttyACM" in port.device or "ttyUSB" in port.device or
+                'usbserial' in port.device):
             try:
                 ser = serial.Serial(port.device, baud_rate)
                 logger.info(f"Connected to {port.device}")
+                time.sleep(2)  # Wait for the connection to be established properly
                 return ser
             except Exception as e:
                 logger.error(f"Could not open {port.device}: {e}")
@@ -35,7 +38,6 @@ async def websocket_handler(websocket, path, serial_connection):
             if data:
                 await websocket.send(data)
                 logger.info(f"Sent: {data}")
-            await asyncio.sleep(0.4)  # Adjust to avoid CPU hogging
     except serial.serialutil.SerialException:
         logger.error("Serial connection shut down")
     except websockets.ConnectionClosed:
