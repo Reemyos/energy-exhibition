@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "energy-exhibition"
+version = "0.1.0"
+description = ""
+authors = ["Reemyos <reem.abramovitz@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+websockets = "^14.0"
+pyserial = "^3.5"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

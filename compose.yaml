@@ -1,11 +1,11 @@
 services:
   serial_to_websocket:
-    build: data_forwarding/.
+    build: serial_to_websocket/.
     container_name: serial_to_websocket
     restart: unless-stopped
     devices:
       - "/dev:/dev"
-    #    privileged: true # Grants extended privileges (use with caution)
+#    privileged: true # Grants extended privileges (use with caution)
     ports:
       - "9001:9001"  # Expose the WebSocket server port
     network_mode: bridge

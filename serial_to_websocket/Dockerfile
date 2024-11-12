@@ -13,13 +13,14 @@ RUN apt-get update && apt-get install -y \
     socat \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies
-COPY requirements.txt .
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
-
-# Copy the rest of the application code
+# Copy the application code
 COPY . .
+
+# Install Python dependencies
+RUN pip install --upgrade pip
+RUN pip install poetry
+RUN poetry config virtualenvs.create false
+RUN poetry install --no-dev
 
 # Expose the WebSocket port
 EXPOSE 9001

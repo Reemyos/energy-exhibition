@@ -20,7 +20,9 @@ const App = () => {
     const [dataPoint, setDataPoint] = useState([0]);
     const [gaugeData, setGaugeData] = useState(getGaugeData(0));
     const [currentLanguageIndex, setIndex] = useState(0)
+    const [isConnected, setIsConnected] = useState(false);
 
+    const reconnectIntervalRef = React.useRef(null);
     const languages = ['Hebrew', 'English', 'Arabic']
 
     function changeLanguage() {
@@ -28,24 +30,52 @@ const App = () => {
     }
 
     useEffect(() => {
-        const ws = new WebSocket('ws://localhost:9001');
+        let ws;
 
-        ws.onopen = () => {
-            console.log('Connected to WebSocket server');
+        const connectWebSocket = () => {
+            if (ws?.readyState === WebSocket.OPEN) return; // Prevent new connection if already open
+
+            ws = new WebSocket('ws://localhost:9001');
+
+            ws.onopen = () => {
+                console.log('Connected to WebSocket server');
+                setIsConnected(true);
+
+                // Clear any existing reconnection interval
+                if (reconnectIntervalRef.current) {
+                    clearInterval(reconnectIntervalRef.current);
+                    reconnectIntervalRef.current = null;
+                }
+            };
+
+            ws.onmessage = (event) => {
+                const newDataPoint = parseFloat(event.data);
+                setDataPoint([newDataPoint]);
+                setGaugeData(getGaugeData(newDataPoint));
+            };
+
+            ws.onclose = () => {
+                console.log('Disconnected from WebSocket server');
+                setIsConnected(false);
+
+                // Attempt to reconnect only if no reconnect interval is active
+                if (!reconnectIntervalRef.current) {
+                    reconnectIntervalRef.current = setInterval(() => {
+                        console.log('Attempting to reconnect...');
+                        connectWebSocket();
+                    }, 5000);
+                }
+            };
         };
 
-        ws.onmessage = (event) => {
-            const newDataPoint = parseFloat(event.data);
-            setDataPoint([newDataPoint]);
-            setGaugeData(getGaugeData(newDataPoint));
-        };
+        connectWebSocket();
 
-        ws.onclose = () => {
-            console.log('Disconnected from WebSocket server');
-        };
-
+        // Clean up on component unmount
         return () => {
-            ws.close();
+            if (reconnectIntervalRef.current) {
+                clearInterval(reconnectIntervalRef.current);
+            }
+            if (ws) ws.close();
         };
     }, []);
 
@@ -130,6 +160,18 @@ const App = () => {
         </div>
     );
 
+    // LED-style connection indicator
+    const connectionIndicatorStyle = {
+        width: '15px',
+        height: '15px',
+        borderRadius: '50%',
+        backgroundColor: isConnected ? '#339409' : '#ad0909',
+        marginTop: '10px',
+        marginLeft: '10px',
+        display: 'inline-block',
+        alignSelf: 'flex-start',
+    };
+
     function gaugeAndBar(gaugeTitle, barTitle) {
         return <div style={{display: 'grid', justifyItems: 'center'}}>
             <div style={{gridRow: 1, gridColumn: 1}}>
@@ -149,6 +191,7 @@ const App = () => {
 
     return (
         <div className={'App-container'}>
+            <div style={connectionIndicatorStyle}></div>
             {fillTextAccordingToLanguage(languages[currentLanguageIndex], gaugeAndBar)}
             <button onClick={changeLanguage} style={{marginTop: '10px'}}>
                 {languages[currentLanguageIndex]}
