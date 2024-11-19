@@ -128,7 +128,6 @@ const App = () => {
         },
     };
 
-
     const gaugeOptions = {
         responsive: true,
         greenFrom: 8,
@@ -141,15 +140,15 @@ const App = () => {
         majorTicks: [0, 2, 4, 6, 8, 10]
     };
 
-    const gaugeChart = (
-        <div style={{height: '100%', aspectRatio: 1, display: 'flex', justifyContent: 'center', marginTop: '10%'}}>
+    const GaugeChart = () => {
+        return <div style={{height: '100%', aspectRatio: 1, display: 'flex', justifyContent: 'center', marginTop: '10%'}}>
             <GoogleChart
                 chartType="Gauge"
                 data={gaugeData}
                 options={gaugeOptions}
             />
         </div>
-    );
+    };
 
     const barChart = (
         <div style={{height: '40vh', aspectRatio: "1:5"}}>
@@ -178,7 +177,7 @@ const App = () => {
                 {gaugeTitle}
             </div>
             <div style={{gridRow: 2, gridColumn: 1, marginTop: '5%'}}>
-                {gaugeChart}
+                <GaugeChart/>
             </div>
             <div style={{gridRow: 1, gridColumn: 2, marginLeft: '15%'}}>
                 {barTitle}

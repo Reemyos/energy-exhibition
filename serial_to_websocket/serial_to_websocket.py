@@ -1,16 +1,17 @@
 import asyncio
 import logging
-import multiprocessing
+import random
 import time
 
 import serial
 import serial.tools.list_ports
 import websockets
 
-from virtual_serial_port import create_virtual_serial_ports, send_data
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+MESSAGE_DELAY = 0.4
 
 
 # Helper function to find an Arduino on an open serial port
@@ -30,7 +31,7 @@ def find_arduino_port(baud_rate=9600):
 
 
 # WebSocket handler that sends serial data to connected clients
-async def websocket_handler(websocket, serial_connection):
+async def arduino_websocket_handler(websocket, serial_connection):
     try:
         while True:
             # Read a line from the serial port
@@ -45,50 +46,52 @@ async def websocket_handler(websocket, serial_connection):
         logger.info("Client disconnected.")
 
 
-async def start_websocket_server(serial_connection):
+async def virtual_websocket_handler(websocket, *args):
+    value = 0  # Start at 0
+    while True:
+        # If value is at max, reset to 0 randomly to avoid predictable patterns
+        if value >= 10:
+            if random.random() < 0.3:  # 30% chance to reset to 0
+                value = 0
+            else:
+                value = 10  # Hold 10 for some cycles without reset
+        else:
+            # Increment value by 0 or 1 to keep it non-decreasing
+            value += random.choice([0, 1])
+
+        message = f"{value}\n"
+        await websocket.send(message)
+        logger.info(f"Sent: {message.strip()}")
+        time.sleep(MESSAGE_DELAY)
+
+
+async def start_websocket_server(serial_connection, use_virtual_port=False):
     # Start the WebSocket server
     logger.info("Starting WebSocket server on ws://0.0.0.0:9001")
-    async with websockets.serve(lambda ws: websocket_handler(ws, serial_connection), '0.0.0.0', 9001):
+    handler = arduino_websocket_handler if not use_virtual_port else virtual_websocket_handler
+    async with websockets.serve(lambda ws: handler(ws, serial_connection), '0.0.0.0', 9001):
         await asyncio.Future()  # Keep server running indefinitely
-
-
-async def virtual_port():
-    logger.info("No Arduino found. Starting Virtual Serial Port...")
-    # Add logging around these functions to confirm their status
-    logger.info("Attempting to create virtual serial ports.")
-    port1, port2, socat_process = create_virtual_serial_ports()
-    logger.info("Virtual serial ports created successfully.")
-    multiprocessing.Process(target=send_data, args=(port1, 9600)).start()
-    return serial.Serial(port2, 9600)  # Connect to the virtual port
 
 
 async def main(use_virtual_port=False):
     serial_connection = find_arduino_port()
 
-    # Check if an Arduino is found; if not, use a virtual port if requested
-    if not serial_connection and use_virtual_port:
-        serial_connection = await virtual_port()
-
     # Start WebSocket server in a background task
-    websocket_task = asyncio.create_task(start_websocket_server(serial_connection))
+    websocket_task = asyncio.create_task(start_websocket_server(serial_connection, use_virtual_port))
 
     try:
         # Loop to detect disconnection and attempt reconnection
         while True:
-            if not serial_connection or not serial_connection.is_open:
+            if (not serial_connection or not serial_connection.is_open) and not use_virtual_port:
                 logger.info("Serial device disconnected. Retrying in 5 seconds...")
                 await asyncio.sleep(5)
                 serial_connection = find_arduino_port()
-
-                if not serial_connection and use_virtual_port:
-                    serial_connection = await virtual_port()
 
                 # Restart the WebSocket server if reconnected
                 if serial_connection and serial_connection.is_open:
                     websocket_task.cancel()  # Cancel the existing WebSocket task
                     websocket_task = asyncio.create_task(start_websocket_server(serial_connection))
             await asyncio.sleep(1)  # Avoid busy-waiting
-
     except asyncio.CancelledError:
         logger.info("Server stopped.")
     except KeyboardInterrupt:

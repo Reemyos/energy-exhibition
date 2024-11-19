@@ -13,9 +13,6 @@ RUN npm install
 # Copy the entire project into the container
 COPY . .
 
-# Build the app for production
-RUN npm run build
-
 EXPOSE 3000
 
 CMD ["npm", "start"]
