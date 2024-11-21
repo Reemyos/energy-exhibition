@@ -135,7 +135,7 @@ const App = () => {
         majorTicks: [0, 2, 4, 6, 8, 10]
     };
 
-    function GaugeAndEnergy({gaugeTitle, energyTitle}) {
+    function gaugeAndEnergy(gaugeTitle, energyTitle) {
         return <div style={{display: 'grid', justifyItems: 'center'}}>
             <div style={{gridRow: 1, gridColumn: 1}}>
                 {gaugeTitle}
@@ -167,7 +167,7 @@ const App = () => {
     return (
         <div className={'App-container'}>
             <div style={connectionIndicatorStyle}></div>
-            <FillTextAccordingToLanguage language={languages[currentLanguageIndex]}/>
+            {FillTextAccordingToLanguage(languages[currentLanguageIndex], gaugeAndEnergy)}
             <button onClick={changeLanguage} style={{marginTop: '10px'}}>
                 {languages[currentLanguageIndex]}
             </button>
