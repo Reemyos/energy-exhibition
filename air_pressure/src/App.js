@@ -136,7 +136,7 @@ const App = () => {
     };
 
     function gaugeAndEnergy(gaugeTitle, energyTitle) {
-        return <div style={{display: 'grid', justifyItems: 'center'}}>
+        return <div style={{display: 'grid', justifyItems: 'center', gridColumnGap: '100px'}}>
             <div style={{gridRow: 1, gridColumn: 1}}>
                 {gaugeTitle}
             </div>
