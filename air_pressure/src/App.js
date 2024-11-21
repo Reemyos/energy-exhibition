@@ -140,7 +140,7 @@ const App = () => {
             <div style={{gridRow: 1, gridColumn: 1}}>
                 {gaugeTitle}
             </div>
-            <div style={{gridRow: 2, gridColumn: 1, marginTop: '5%'}}>
+            <div style={{gridRow: 2, gridColumn: 1, paddingRight: '80%'}}>
                 <GaugeChart data={gaugeData} options={gaugeOptions}/>
             </div>
             <div style={{gridRow: 1, gridColumn: 2, marginLeft: '15%'}}>

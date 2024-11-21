@@ -67,9 +67,9 @@ async def virtual_websocket_handler(websocket, *args):
 
 async def start_websocket_server(serial_connection, use_virtual_port=False):
     # Start the WebSocket server
-    logger.info("Starting WebSocket server on ws://0.0.0.0:9001")
+    logger.info("Starting WebSocket server on ws://localhost:9001")
     handler = arduino_websocket_handler if not use_virtual_port else virtual_websocket_handler
-    async with websockets.serve(lambda ws: handler(ws, serial_connection), '0.0.0.0', 9001):
+    async with websockets.serve(lambda ws: handler(ws, serial_connection), 'localhost', 9001):
         await asyncio.Future()  # Keep server running indefinitely
 
 
