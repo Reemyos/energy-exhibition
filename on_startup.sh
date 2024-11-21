@@ -1,5 +1,5 @@
 # Run the serial_to_websocket/on_startup.sh script in a subshell
-sh ./serial_to_websocket/on_startup.sh &
+eval "sh ./serial_to_websocket/on_startup.sh" &> /dev/null & disown
 
 # Run the air_pressure/on_startup.sh script
 sh ./air_pressure/on_startup.sh
