@@ -1,5 +1,6 @@
 import React from "react";
 import './App.css';
+import {GaugeAndEnergy} from "./components";
 
 const hebrewPageTitle = <h1 className={'Hebrew'}>טיל אוויר דחוס</h1>;
 
@@ -54,12 +55,12 @@ export const texts = {
     }
 }
 
-export function fillTextAccordingToLanguage(language, gaugeAndBar) {
+export function FillTextAccordingToLanguage({language}) {
     return (
         <>
             {texts[language].pageTitle}
             {texts[language].instructions}
-            {gaugeAndBar(texts[language].gaugeTitle, texts[language].energyTitle)}
+
             {texts[language].explanation}
         </>
     );

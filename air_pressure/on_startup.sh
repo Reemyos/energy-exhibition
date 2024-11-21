@@ -36,7 +36,7 @@ fi
 # Run the docker image
 echo 'Running the docker image' >&2
 docker build -t air_pressure $dockerfile_path
-docker docker run -d --name air_pressure \
+docker run -d --name air_pressure \
   -p 3000:3000 \
   --env NODE_ENV=production \
   --network bridge \

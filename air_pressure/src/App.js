@@ -1,12 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {Bar} from 'react-chartjs-2';
-import {Chart as GoogleChart} from 'react-google-charts';
-import {Chart, registerables} from 'chart.js';
 import './App.css'
-import {fillTextAccordingToLanguage} from "./texts";
-
-// Register necessary components
-Chart.register(...registerables);
+import {FillTextAccordingToLanguage} from "./texts";
+import {EnergyChart, GaugeChart} from "./components";
 
 export function getGaugeData(currentPressure) {
     return [
@@ -101,7 +96,7 @@ const App = () => {
         ],
     };
 
-    const options = {
+    const barOptions = {
         scales: {
             y: {
                 beginAtZero: true,
@@ -140,24 +135,22 @@ const App = () => {
         majorTicks: [0, 2, 4, 6, 8, 10]
     };
 
-    const GaugeChart = () => {
-        return <div style={{height: '100%', aspectRatio: 1, display: 'flex', justifyContent: 'center', marginTop: '10%'}}>
-            <GoogleChart
-                chartType="Gauge"
-                data={gaugeData}
-                options={gaugeOptions}
-            />
+    function GaugeAndEnergy({gaugeTitle, energyTitle}) {
+        return <div style={{display: 'grid', justifyItems: 'center'}}>
+            <div style={{gridRow: 1, gridColumn: 1}}>
+                {gaugeTitle}
+            </div>
+            <div style={{gridRow: 2, gridColumn: 1, marginTop: '5%'}}>
+                <GaugeChart data={gaugeData} options={gaugeOptions}/>
+            </div>
+            <div style={{gridRow: 1, gridColumn: 2, marginLeft: '15%'}}>
+                {energyTitle}
+            </div>
+            <div style={{gridRow: 2, gridColumn: 2}}>
+                <EnergyChart data={chartData} options={barOptions}/>
+            </div>
         </div>
-    };
-
-    const barChart = (
-        <div style={{height: '40vh', aspectRatio: "1:5"}}>
-            <Bar
-                data={chartData}
-                options={options}
-            />
-        </div>
-    );
+    }
 
     // LED-style connection indicator
     const connectionIndicatorStyle = {
@@ -171,27 +164,10 @@ const App = () => {
         alignSelf: 'flex-start',
     };
 
-    function gaugeAndBar(gaugeTitle, barTitle) {
-        return <div style={{display: 'grid', justifyItems: 'center'}}>
-            <div style={{gridRow: 1, gridColumn: 1}}>
-                {gaugeTitle}
-            </div>
-            <div style={{gridRow: 2, gridColumn: 1, marginTop: '5%'}}>
-                <GaugeChart/>
-            </div>
-            <div style={{gridRow: 1, gridColumn: 2, marginLeft: '15%'}}>
-                {barTitle}
-            </div>
-            <div style={{gridRow: 2, gridColumn: 2}}>
-                {barChart}
-            </div>
-        </div>
-    }
-
     return (
         <div className={'App-container'}>
             <div style={connectionIndicatorStyle}></div>
-            {fillTextAccordingToLanguage(languages[currentLanguageIndex], gaugeAndBar)}
+            <FillTextAccordingToLanguage language={languages[currentLanguageIndex]}/>
             <button onClick={changeLanguage} style={{marginTop: '10px'}}>
                 {languages[currentLanguageIndex]}
             </button>
