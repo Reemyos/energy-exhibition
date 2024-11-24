@@ -84,7 +84,7 @@ export class BaseApp extends Component {
         };
 
         return (
-            <div>
+            <div className={'App-container'}>
                 <div style={connectionIndicatorStyle}></div>
                 {this.renderContent()}
                 <button onClick={this.changeLanguage} style={{ marginTop: '10px' }}>
