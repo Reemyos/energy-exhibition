@@ -1,5 +1,5 @@
 import React from 'react';
-import BaseApp from 'BaseApp.js';
+import BaseApp from './BaseApp.js';
 import { FillTextAccordingToLanguage } from './texts';
 import { EnergyChart, GaugeChart } from './components';
 
