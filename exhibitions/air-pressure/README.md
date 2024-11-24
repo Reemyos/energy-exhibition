@@ -57,7 +57,7 @@ Then you can run the following command to start the website in a Docker containe
 
 ```bash
 cd energy-exhibition
-docker-compose up -d air_pressure
+docker-compose up -d air-pressure
 ```
 
 if you want to run the serial to websocket forwarder too, you can just run:

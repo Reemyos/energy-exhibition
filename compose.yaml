@@ -1,7 +1,7 @@
 services:
   air_pressure:
-    build: air_pressure/.
-    container_name: air_pressure
+    build: air-pressure/.
+    container_name: air-pressure
     ports:
       - "3000:3000"
     environment:

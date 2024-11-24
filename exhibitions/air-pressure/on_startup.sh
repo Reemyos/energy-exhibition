@@ -18,10 +18,10 @@ else
   echo 'npm is already installed' >&2
 fi
 
-# If cwd is energy-exhibition and not air_pressure change the app directory
+# If cwd is energy-exhibition and not air-pressure change the app directory
 if [ -d "air_pressure" ]; then
   echo "Changing directory to air_pressure" >&2
-  cd air_pressure || exit 1
+  cd airPressure || exit 1
 fi
 
 # Run the app
