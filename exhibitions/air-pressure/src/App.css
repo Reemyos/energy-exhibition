@@ -47,6 +47,43 @@
   width: 100%;
 }
 
-.Hebrew {
-  direction: rtl;
+@font-face {
+    font-family: 'SimplerPro';
+    src: url('./assets/fonts/SimplerPro_HLAR-Regular.otf') format('opentype');
+    font-weight: 400; /* Regular */
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SimplerPro';
+    src: url('./assets/fonts/SimplerPro_HLAR-Semibold.otf') format('opentype');
+    font-weight: 600; /* Semi-Bold */
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SimplerPro';
+    src: url('./assets/fonts/SimplerPro_HLAR-Black.otf') format('opentype');
+    font-weight: 900; /* Black */
+    font-style: normal;
+}
+
+.Hebrew, .English, .Arabic {
+    font-family: 'SimplerPro', sans-serif;
+}
+
+.Hebrew, .Arabic {
+    direction: rtl;
+}
+
+.h1-bold {
+    font-weight: 900; /* Black */
+}
+
+.h2-semi-bold {
+    font-weight: 600; /* Semi-Bold */
+}
+
+.h3-regular {
+    font-weight: 400; /* Regular */
 }
