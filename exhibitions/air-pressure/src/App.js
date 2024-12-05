@@ -22,7 +22,10 @@ export class ExtendedApp extends BaseApp {
     }
 
     handleMessage = (event) => {
-        const newDataPoint = parseFloat(event.data);
+        let newDataPoint = parseFloat(event.data);
+        if (newDataPoint <= 0) {
+            newDataPoint = 0;        
+        }
         this.setState((prevState) => ({
             dataPoint: [newDataPoint],
             gaugeData: getGaugeData(newDataPoint),
@@ -38,13 +41,13 @@ export class ExtendedApp extends BaseApp {
                     label: 'Pressure',
                     data: dataPoint,
                     backgroundColor: dataPoint.map((point) => {
-                        if (point >= 8) return 'rgba(81, 255, 150, 0.2)';
-                        if (point >= 6) return 'rgba(255, 206, 86, 0.2)';
+                        if (point >= 40) return 'rgba(81, 255, 150, 0.2)';
+                        if (point >= 30) return 'rgba(255, 206, 86, 0.2)';
                         return 'rgba(75, 192, 192, 0.2)';
                     }),
                     borderColor: dataPoint.map((point) => {
-                        if (point >= 8) return 'rgba(81, 255, 150, 1)';
-                        if (point >= 6) return 'rgba(255, 206, 86, 1)';
+                        if (point >= 40) return 'rgba(81, 255, 150, 1)';
+                        if (point >= 30) return 'rgba(255, 206, 86, 1)';
                         return 'rgba(75, 192, 192, 1)';
                     }),
                     borderWidth: 1,
@@ -55,7 +58,7 @@ export class ExtendedApp extends BaseApp {
 
         const barOptions = {
             scales: {
-                y: { beginAtZero: true, min: 0, max: 10, title: { display: true, text: 'Energy' } },
+                y: { beginAtZero: true, min: 0, max: 50, title: { display: true, text: 'Energy' } },
                 x: { beginAtZero: true, min: 0, max: 1 },
             },
             responsive: true,
@@ -66,14 +69,15 @@ export class ExtendedApp extends BaseApp {
 
         const gaugeOptions = {
             responsive: true,
-            greenFrom: 8,
-            greenTo: 10,
-            yellowFrom: 6,
-            yellowTo: 8,
-            minorTicks: 3,
+            greenFrom: 40,
+            greenTo: 80,
+            redFrom: 80,
+            redTo: 160,
+            yellowFrom: 30,
+            yellowTo: 40,
             min: 0,
-            max: 10,
-            majorTicks: [0, 2, 4, 6, 8, 10],
+            max: 160,
+            majorTicks: [0, 20, 40, 60, 80, 100, 120, 140, 160],
         };
 
         const gaugeAndEnergy = (gaugeTitle, energyTitle) => (
