@@ -8,11 +8,8 @@ else
 fi
 
 # Make sure the current working directory is where this script is located
-echo "Making sure we're in the right directory" >&2
-if [ -x "$(! command ls | grep -q on_startup.sh)" ]; then
-  echo "Something went wrong, the current working directory does not contain this script" >&2
-  exit 1
-fi
+cd '/home/mada/energy-exhibition/serial_to_websocket'
+echo "Current directory: $(pwd)"
 
 # Install the dependencies
 echo 'Installing dependencies' >&2
@@ -21,7 +18,7 @@ echo 'Installed dependencies' >&2
 
 script_path='serial_to_websocket.py'
 
-# If cwd is energy-exhibition and not serial_to_websocket define the docker image path as:
+# If cwd is energy-exhibition and not serial_to_websocket define the script path as:
 if [ -d "serial_to_websocket" ]; then
   script_path='./serial_to_websocket/serial_to_websocket.py'
 fi

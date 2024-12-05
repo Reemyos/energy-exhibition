@@ -18,14 +18,20 @@ else
   echo 'npm is already installed' >&2
 fi
 
-# If cwd is energy-exhibition and not air-pressure change the app directory
-if [ -d "air_pressure" ]; then
-  echo "Changing directory to air_pressure" >&2
-  cd airPressure || exit 1
-fi
+cd '/home/mada/energy-exhibition/exhibitions/air-pressure'
 
-# Run the app
+# Install the dependencies
+echo 'Installing dependencies' >&2
+npm install
+
 echo 'Running the app' >&2
-npm start
+BROWSER=none npm start &
+
+# Wait for a few seconds to ensure the app has started
+sleep 5
+
+# Open Firefox in fullscreen mode (kiosk mode) and point to the app's URL
+echo 'Opening Firefox in fullscreen mode' >&2
+firefox --kiosk http://localhost:3000 
 
 
