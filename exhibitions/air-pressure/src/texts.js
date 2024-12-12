@@ -7,10 +7,11 @@ const hebrewInstructionsTitle = <h1 className={'Hebrew'}>הוראות:</h1>;
 
 const hebrewInstructions =
     <p className={'Hebrew'}>
-        1. אחזו בפיית הבקבוק ולחצו בחזקה כלפי מטה<br/>
-        2. התסתכלו על השעון מכוון וחכו עד שיגיע לאזור הירוק <br/>
-        3. שחררו במהירות<br/>
-    </p>;
+        <strong>אחזו</strong> הבקבוק ולחצו בחזקה כלפי מטה<br/>
+        <strong>התסתכלו</strong> על השעון מכוון וחכו עד שיגיע לאזור הירוק <br/>
+        <strong>שחררו </strong> במהירות<br/>
+    </p>
+;
 
 const hebrewExplanation =
     <p className={'Hebrew'}>
