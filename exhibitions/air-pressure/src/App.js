@@ -79,4 +79,5 @@ export class ExtendedApp extends BaseApp {
     }
 }
 
+
 export default ExtendedApp;
