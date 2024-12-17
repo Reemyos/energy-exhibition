@@ -20,7 +20,7 @@ export function GaugeChart({data, options}) {
 }
 
 export function EnergyChart({data, options}) {
-    return <div style={{height: '40vh', aspectRatio: "1:5"}}>
+    return <div style={{height: '40vh', width: '15vw', display: 'flex'}}>
         <Bar
             data={data}
             options={options}

@@ -2,6 +2,7 @@ import React from 'react';
 import BaseApp from './BaseApp.js';
 import {FillTextAccordingToLanguage} from './texts';
 import {EnergyChart, GaugeChart} from './components';
+import {pressureToCalorie, pressureToJoule} from "./utils";
 
 
 const minPressure = 0;
@@ -10,7 +11,7 @@ const maxPressure = 1.5;
 export function getGaugeData(currentPressure) {
     return [
         ["Label", "Value"],
-        ["ATM", currentPressure],
+        ["atm", currentPressure],
     ];
 }
 
@@ -20,7 +21,7 @@ export class ExtendedApp extends BaseApp {
 
         this.state = {
             ...this.state,
-            dataPoint: [0],
+            dataPoint: 0,
             gaugeData: getGaugeData(0),
         };
     }
@@ -28,50 +29,62 @@ export class ExtendedApp extends BaseApp {
     handleMessage = (event) => {
         const newDataPoint = (parseFloat(event.data) / 10) * maxPressure;
         this.setState((prevState) => ({
-            dataPoint: [newDataPoint],
+            dataPoint: newDataPoint,
             gaugeData: getGaugeData(newDataPoint),
         }));
     };
 
     renderContent() {
         const {dataPoint, gaugeData, currentLanguageIndex} = this.state;
-        const colorMappingBackground = (point) => {
-            if (point >= 1.3) return 'rgba(255, 99, 132, 0.2)';
-            if (point >= 0.8) return 'rgba(255, 206, 86, 0.2)';
-            if (point >= 0.4) return 'rgba(81, 255, 150, 0.2)';
-            return 'rgba(75, 192, 192, 0.2)';
-        };
 
-        const colorMappingBorder = (point) => {
-            if (point >= 1.3) return 'rgba(255, 99, 132, 1)';
-            if (point >= 0.8) return 'rgba(255, 206, 86, 1)';
-            if (point >= 0.4) return 'rgba(81, 255, 150, 1)';
-            return 'rgba(75, 192, 192, 1)';
-        }
-
-        const chartData = {
-            labels: dataPoint.map((_, index) => index + 1),
+        const jouleChartData = {
+            labels: ['Joules'],
             datasets: [
                 {
-                    label: 'Pressure',
-                    data: dataPoint,
-                    backgroundColor: dataPoint.map(colorMappingBackground),
-                    borderColor: dataPoint.map(colorMappingBorder),
+                    label: 'Joules',
+                    data: [pressureToJoule(dataPoint)],
+                    backgroundColor: 'rgba(100, 220, 150, 0.2)',
+                    borderColor: 'rgba(100, 220, 150, 1)',
                     borderWidth: 1,
                     tension: 0.1,
                 },
             ],
         };
 
+        const calorieChartData = {
+            labels: ['Calories'],
+            datasets: [
+                {
+                    label: 'Calories',
+                    data: [pressureToCalorie(dataPoint)],
+                    backgroundColor: 'rgba(90, 99, 250, 0.2)',
+                    borderColor: 'rgba(90, 99, 250, 1)',
+                    borderWidth: 1,
+                    tension: 0.1,
+                }
+            ],
+        };
+
         const barOptions = {
             scales: {
-                y: {beginAtZero: true, min: minPressure, max: maxPressure, title: {display: true, text: 'Energy'}},
-                x: {beginAtZero: true, min: 0, max: 1},
+                y: {
+                    beginAtZero: true,
+                    min: 0,
+                    max: Math.max(pressureToJoule(maxPressure), pressureToCalorie(maxPressure)),
+                    ticks: {display: false},
+                    grid: {display: false},
+                    border: {display: false},
+                },
+                x: {
+                    grid: {display: false},
+                    border: {display: false},
+                },
             },
             responsive: true,
             aspectRatio: 1,
             maintainAspectRatio: false,
             plugins: {legend: {display: false}},
+            barPercentage: 0.5,
         };
 
         const gaugeOptions = {
@@ -91,12 +104,13 @@ export class ExtendedApp extends BaseApp {
         const gaugeAndEnergy = (gaugeTitle, energyTitle) => (
             <div style={{display: 'grid', justifyItems: 'center', gridColumnGap: '100px'}}>
                 <div style={{gridRow: 1, gridColumn: 1}}>{gaugeTitle}</div>
-                <div style={{gridRow: 2, gridColumn: 1, paddingRight: '80%'}}>
+                <div style={{gridRow: 2, gridColumn: 1}}>
                     <GaugeChart data={gaugeData} options={gaugeOptions}/>
                 </div>
                 <div style={{gridRow: 1, gridColumn: 2, marginLeft: '15%'}}>{energyTitle}</div>
-                <div style={{gridRow: 2, gridColumn: 2}}>
-                    <EnergyChart data={chartData} options={barOptions}/>
+                <div style={{gridRow: 2, gridColumn: 2, display: 'flex', flexDirection: 'row', paddingLeft: '20%'}}>
+                    <EnergyChart data={jouleChartData} options={barOptions}/>
+                    <EnergyChart data={calorieChartData} options={barOptions}/>
                 </div>
             </div>
         );
