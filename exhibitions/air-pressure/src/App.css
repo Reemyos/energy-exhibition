@@ -76,6 +76,21 @@
     direction: rtl;
 }
 
+.Title {
+    font-size: 3rem;
+    margin: 0;
+}
+
+.Subtitle {
+    font-size: 2rem;
+    margin: 0;
+}
+
+.Text {
+    font-size: 1.5rem;
+    margin: 0;
+}
+
 .h1-bold {
     font-weight: 900; /* Black */
 }

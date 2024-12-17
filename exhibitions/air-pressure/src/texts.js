@@ -1,12 +1,10 @@
 import React from "react";
 import './App.css';
 
-const hebrewPageTitle = <h1 className={'Hebrew'}>טיל אוויר דחוס</h1>;
-
-const hebrewInstructionsTitle = <h1 className={'Hebrew'}>הוראות:</h1>;
+const hebrewPageTitle = <h1 className={'Hebrew Title'}>טיל אוויר דחוס</h1>;
 
 const hebrewInstructions =
-    <p className={'Hebrew'}>
+    <p className={'Hebrew Text'}>
         <strong>אחזו</strong> הבקבוק ולחצו בחזקה כלפי מטה<br/>
         <strong>התסתכלו</strong> על השעון מכוון וחכו עד שיגיע לאזור הירוק <br/>
         <strong>שחררו </strong> במהירות<br/>
@@ -14,7 +12,7 @@ const hebrewInstructions =
 ;
 
 const hebrewExplanation =
-    <p className={'Hebrew'}>
+    <p className={'Hebrew Text'}>
         דחיסת האוויר בבקבוק אוגרת בתוכו אנרגיה פוטנציאלית, המשתחררת והופכת לאנרגית תנועה וגובה כאשר הבקבוק עף.<br/>
         אגירת אנרגיה באוויר דחוס נעשית בעיקר במדחסים (קומפרסורים) המשמשים להפעלת כלי עבודה וציוד פניאומטי,<br/>
         אך הצורך באגירת אנרגיה ממקורות מתחדשים הביא לפיתוח טכנולוגיות ומתקני אגירה בקנה מידה תעשייתי.<br/>
@@ -24,15 +22,14 @@ const hebrewExplanation =
         היא דוגמה יפה.
     </p>;
 
-const hebrewGaugeTitle = <h2 className={'Hebrew'}>הלחץ במיכל:</h2>;
+const hebrewGaugeTitle = <h2 className={'Hebrew Subtitle'}>הלחץ במיכל:</h2>;
 
-const hebrewEnergyTitle = <h2 className={'Hebrew'}>האנרגיה במיכל:</h2>;
+const hebrewEnergyTitle = <h2 className={'Hebrew Subtitle'}>האנרגיה במיכל:</h2>;
 
 export const texts = {
     'Hebrew': {
         pageTitle: hebrewPageTitle,
         explanation: hebrewExplanation,
-        instructionsTitle: hebrewInstructionsTitle,
         instructions: hebrewInstructions,
         gaugeTitle: hebrewGaugeTitle,
         energyTitle: hebrewEnergyTitle
@@ -40,7 +37,6 @@ export const texts = {
     'English': {
         pageTitle: null,
         explanation: null,
-        instructionsTitle: null,
         instructions: null,
         gaugeTitle: null,
         energyTitle: null
@@ -48,7 +44,6 @@ export const texts = {
     'Arabic': {
         pageTitle: null,
         explanation: null,
-        instructionsTitle: null,
         instructions: null,
         gaugeTitle: null,
         energyTitle: null

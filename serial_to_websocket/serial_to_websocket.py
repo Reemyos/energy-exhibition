@@ -101,6 +101,6 @@ async def main(use_virtual_port=False):
 # Run the main function
 if __name__ == "__main__":
     try:
-        asyncio.run(main())
+        asyncio.run(main(True))
     except KeyboardInterrupt:
         logger.error("Server stopped.")
