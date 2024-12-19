@@ -27,7 +27,7 @@ export class ExtendedApp extends BaseApp {
     }
 
     handleMessage = (event) => {
-        const newDataPoint = (parseFloat(event.data) / 10) * maxPressure;
+        const newDataPoint = parseFloat(event.data) / 10;
         this.setState((prevState) => ({
             dataPoint: newDataPoint,
             gaugeData: getGaugeData(newDataPoint),
@@ -104,9 +104,9 @@ export class ExtendedApp extends BaseApp {
         };
 
         const gaugeAndEnergy = (gaugeTitle, energyTitle) => (
-            <div style={{display: 'grid', justifyItems: 'center', gridColumnGap: '100px'}}>
+            <div style={{display: 'grid', justifyItems: 'center', gridColumnGap: '100px', marginBottom: '20%'}}>
                 <div style={{gridRow: 1, gridColumn: 1}}>{gaugeTitle}</div>
-                <div style={{gridRow: 2, gridColumn: 1}}>
+                <div style={{gridRow: 2, gridColumn: 1, display: 'flex', flexDirection: 'row', justifyContent: 'center', paddingTop: '100%'}}>
                     <GaugeChart data={gaugeData} options={gaugeOptions}/>
                 </div>
                 <div style={{gridRow: 1, gridColumn: 2, marginLeft: '15%'}}>{energyTitle}</div>

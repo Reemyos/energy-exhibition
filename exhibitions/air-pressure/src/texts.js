@@ -52,11 +52,11 @@ export const texts = {
 
 export function FillTextAccordingToLanguage(language, gaugeAndEnergy) {
     return (
-        <>
+        <div style={{height: '100vh', width: '70vw', display: 'flex', justifyContent: 'center', flexDirection: 'column'}}>
             {texts[language].pageTitle}
             {texts[language].instructions}
             {gaugeAndEnergy(texts[language].gaugeTitle, texts[language].energyTitle)}
             {texts[language].explanation}
-        </>
+        </div>
     );
 }

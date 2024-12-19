@@ -121,7 +121,7 @@ void loop() {
   // Serial.print("Original analog value: ");
   // Serial.println(SensorValue);
   Pressure_Value = map(SensorValue, Min_Pres_V, Max_Pres_V, Min_Pres_P, Max_Pres_P);
-  Number_To_Display = Pressure_Value/10;// as only 3 digits
+  Number_To_Display = Pressure_Value;// as only 3 digits
   Number_To_Display = map(Number_To_Display, 0, 1024, 0, 999);
   Number_To_Display = max(Number_To_Display, 0);
 
