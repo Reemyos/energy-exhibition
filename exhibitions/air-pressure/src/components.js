@@ -10,7 +10,7 @@ Chart.register(...registerables);
 
 
 export function GaugeChart({data, options}) {
-    return <div style={{height: '100%', aspectRatio: 1, display: 'flex', justifyContent: 'center', marginTop: '10%'}}>
+    return <div style={{height: '100%', aspectRatio: 1, display: 'flex', justifyContent: 'center', marginBottom: '100px'}}>
         <GoogleChart
             chartType="Gauge"
             data={data}

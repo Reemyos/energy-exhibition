@@ -101,12 +101,14 @@ export class ExtendedApp extends BaseApp {
             min: minPressure,
             max: maxPressure,
             majorTicks: [0, 0.5, 1, 1.5],
+            height: 300,
+            width: 300
         };
 
         const gaugeAndEnergy = (gaugeTitle, energyTitle) => (
             <div style={{display: 'grid', justifyItems: 'center', gridColumnGap: '100px', marginBottom: '20%'}}>
                 <div style={{gridRow: 1, gridColumn: 1}}>{gaugeTitle}</div>
-                <div style={{gridRow: 2, gridColumn: 1, display: 'flex', flexDirection: 'row', justifyContent: 'center', paddingTop: '100%'}}>
+                <div style={{gridRow: 2, gridColumn: 1, display: 'flex', flexDirection: 'row', justifyContent: 'center', paddingTop: '50%'}}>
                     <GaugeChart data={gaugeData} options={gaugeOptions}/>
                 </div>
                 <div style={{gridRow: 1, gridColumn: 2, marginLeft: '15%'}}>{energyTitle}</div>
