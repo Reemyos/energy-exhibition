@@ -83,8 +83,10 @@ export class ExtendedApp extends BaseApp {
             responsive: true,
             aspectRatio: 1,
             maintainAspectRatio: false,
-            plugins: {legend: {display: false}},
             barPercentage: 0.5,
+            plugins: {
+                legend: {display: false},
+            },
         };
 
         const gaugeOptions = {
