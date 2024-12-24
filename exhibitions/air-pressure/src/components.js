@@ -4,9 +4,9 @@ import {Bar} from "react-chartjs-2";
 import {Chart, registerables} from 'chart.js';
 import './idGeneratedStyles.css';
 import gaugeImage from './assets/images/gauge.png';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
-
-Chart.register(...registerables);
+Chart.register(...registerables, ChartDataLabels);
 
 
 export function GaugeChart({data, options}) {

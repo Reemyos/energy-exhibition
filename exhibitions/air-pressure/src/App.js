@@ -27,7 +27,7 @@ export class ExtendedApp extends BaseApp {
     }
 
     handleMessage = (event) => {
-        const newDataPoint = parseFloat(event.data) / 10;
+        const newDataPoint = (parseFloat(event.data) / 10) * 1.5;
         this.setState((prevState) => ({
             dataPoint: newDataPoint,
             gaugeData: getGaugeData(newDataPoint),
@@ -65,12 +65,13 @@ export class ExtendedApp extends BaseApp {
             ],
         };
 
+        const valueMargin = 30;
         const barOptions = {
             scales: {
                 y: {
                     beginAtZero: true,
                     min: 0,
-                    max: Math.max(pressureToJoule(maxPressure), pressureToCalorie(maxPressure)),
+                    max: Math.max(pressureToJoule(maxPressure), pressureToCalorie(maxPressure)) + valueMargin,
                     ticks: {display: false},
                     grid: {display: false},
                     border: {display: false},
@@ -85,8 +86,18 @@ export class ExtendedApp extends BaseApp {
             maintainAspectRatio: false,
             barPercentage: 0.5,
             plugins: {
-                legend: {display: false},
-            },
+                legend: { display: false },
+                datalabels: {
+                    color: '#000', // Label color
+                    anchor: 'end', // Position the label near the bar's end
+                    align: 'top',  // Align the label on top of the bar
+                    formatter: (value) => value.toFixed(2), // Format the label value
+                    font: {
+                        size: 12,
+                        weight: 'bold',
+                    },
+                }
+            }
         };
 
         const gaugeOptions = {
