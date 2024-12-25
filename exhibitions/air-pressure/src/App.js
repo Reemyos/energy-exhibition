@@ -122,8 +122,8 @@ export class ExtendedApp extends BaseApp {
                 <div style={{gridRow: 2, gridColumn: 1, display: 'flex', flexDirection: 'row', justifyContent: 'center', paddingTop: '50%'}}>
                     <GaugeChart data={gaugeData} options={gaugeOptions}/>
                 </div>
-                <div style={{gridRow: 1, gridColumn: 2, marginLeft: '15%'}}>{energyTitle}</div>
-                <div style={{gridRow: 2, gridColumn: 2, display: 'flex', flexDirection: 'row', paddingLeft: '20%'}}>
+                <div style={{gridRow: 1, gridColumn: 2, marginRight: '20%'}}>{energyTitle}</div>
+                <div style={{gridRow: 2, gridColumn: 2, display: 'flex', flexDirection: 'row'}}>
                     <EnergyChart data={jouleChartData} options={barOptions}/>
                     <EnergyChart data={calorieChartData} options={barOptions}/>
                 </div>

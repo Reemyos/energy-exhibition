@@ -4,8 +4,8 @@ import './App.css';
 const hebrewPageTitle = <h1 className={'Hebrew Title'}>טיל אוויר דחוס</h1>;
 
 const hebrewInstructions =
-    <div style={{display: 'flex', alignSelf: 'center'}}>
-        <img src={"require('./assets/images/instructions.png')"} alt={'instructions'} width={'0%'}/>
+    <div style={{display: 'flex', alignItems: 'center', width: '100vw', marginBottom: '10%'}}>
+        <img src={require("./assets/images/instructions.png")} alt={'instructions'} width={'75%'}/>
     </div>
 
 const hebrewGaugeTitle = <h2 className={'Hebrew Subtitle'}>הלחץ במיכל:</h2>;
