@@ -1,39 +1,32 @@
 import React from "react";
 import './App.css';
 
-const hebrewPageTitle = <h1 className={'Hebrew Title'}>טיל אוויר דחוס</h1>;
+const hebrewPageTitle = <h1 className={'Hebrew Title'}>טבעת קופצת</h1>;
 
 const hebrewInstructions =
     <div style={{display: 'flex', alignSelf: 'center'}}>
-        <img src={"require('./assets/images/instructions.png')"} alt={'instructions'} width={'0%'}/>
+        <img src={''} alt={'instructions'} width={'0%'}/>
     </div>
-
-const hebrewGaugeTitle = <h2 className={'Hebrew Subtitle'}>הלחץ במיכל:</h2>;
-
-const hebrewEnergyTitle = <h2 className={'Hebrew Subtitle'}>האנרגיה במיכל:</h2>;
 
 export const texts = {
     'Hebrew': {
         pageTitle: hebrewPageTitle,
         instructions: hebrewInstructions,
-        gaugeTitle: hebrewGaugeTitle,
-        energyTitle: hebrewEnergyTitle
+        barTitle: null
     },
     'English': {
         pageTitle: null,
         instructions: null,
-        gaugeTitle: null,
-        energyTitle: null
+        barTitle: null
     },
     'Arabic': {
         pageTitle: null,
         instructions: null,
-        gaugeTitle: null,
-        energyTitle: null
+        barTitle: null
     }
 }
 
-export function FillTextAccordingToLanguage(language, gaugeAndEnergy) {
+export function FillTextAccordingToLanguage(language, barChart) {
     return (
         <div style={{
             height: '100vh',
@@ -44,7 +37,7 @@ export function FillTextAccordingToLanguage(language, gaugeAndEnergy) {
         }}>
             {texts[language].pageTitle}
             {texts[language].instructions}
-            {gaugeAndEnergy(texts[language].gaugeTitle, texts[language].energyTitle)}
+            {barChart(texts[language].barTitle)}
         </div>
     );
 }

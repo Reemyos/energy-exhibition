@@ -1,0 +1,108 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.App-container {
+  background-color: #fafafa;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+}
+
+@font-face {
+    font-family: 'SimplerPro';
+    src: url('./assets/fonts/SimplerPro_HLAR-Regular.otf') format('opentype');
+    font-weight: 400; /* Regular */
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SimplerPro';
+    src: url('./assets/fonts/SimplerPro_HLAR-Semibold.otf') format('opentype');
+    font-weight: 600; /* Semi-Bold */
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SimplerPro';
+    src: url('./assets/fonts/SimplerPro_HLAR-Black.otf') format('opentype');
+    font-weight: 900; /* Black */
+    font-style: normal;
+}
+
+.Hebrew, .English, .Arabic {
+    font-family: 'SimplerPro', sans-serif;
+}
+
+.Hebrew, .Arabic {
+    direction: rtl;
+}
+
+.Title {
+    display: flex;
+    align-self: center;
+    font-size: 3rem;
+    margin-bottom: 20%;
+}
+
+.Subtitle {
+    font-size: 2rem;
+    margin: 0;
+}
+
+.Text {
+    display: inline-block;
+    align-self: center;
+    font-size: 1.5rem;
+    margin-bottom: 10%;
+}
+
+.h1-bold {
+    font-weight: 900; /* Black */
+}
+
+.h2-semi-bold {
+    font-weight: 600; /* Semi-Bold */
+}
+
+.h3-regular {
+    font-weight: 400; /* Regular */
+}
