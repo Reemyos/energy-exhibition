@@ -41,7 +41,7 @@ export class ExtendedApp extends BaseApp {
             ],
         };
 
-        const valueMargin = 50;
+        const valueMargin = 100;
         const barOptions = {
             scales: {
                 y: {
@@ -77,12 +77,12 @@ export class ExtendedApp extends BaseApp {
         };
 
         const barChart = (title) => (
-            <div style={{display: 'grid', justifyItems: 'center', gridColumnGap: '100px', marginBottom: '20%'}}>
-                <div style={{gridRow: 1, gridColumn: 1}}>{title}</div>
-                <div style={{gridRow: 2, gridColumn: 1, display: 'flex', flexDirection: 'row'}}>
-                    <BarChart data={ampChartData} options={barOptions}/>
-                </div>
+            // <div style={{display: 'grid', justifyItems: 'center', marginBottom: '20%', height:'80vh'}}>
+            //     <div style={{gridRow: 1, gridColumn: 1}}>{title}</div>
+            <div style={{display: 'flex', flexDirection: 'row', alignSelf: 'center', height: '50vh'}}>
+                <BarChart data={ampChartData} options={barOptions}/>
             </div>
+            // </div>
         );
 
         return FillTextAccordingToLanguage(
