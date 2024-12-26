@@ -1,19 +1,15 @@
 import React from 'react';
 import BaseApp from './BaseApp.js';
 import {FillTextAccordingToLanguage} from './texts';
-import {EnergyChart, GaugeChart} from './components';
+import {DesignedGaugeChart, EnergyChart, BarChartSVG, BarChartWithPNG} from './components';
 import {pressureToCalorie, pressureToJoule} from "./utils";
+import mainBackgroundHebrew from './assets/images/screens/main_hebrew.jpg'
+import mainBackgroundEnglish from './assets/images/screens/main_english.jpg'
+import mainBackgroundArabic from './assets/images/screens/main_arabic.jpg'
 
 
 const minPressure = 0;
 const maxPressure = 1.5;
-
-export function getGaugeData(currentPressure) {
-    return [
-        ["Label", "Value"],
-        ["atm", currentPressure],
-    ];
-}
 
 export class ExtendedApp extends BaseApp {
     constructor(props) {
@@ -22,15 +18,13 @@ export class ExtendedApp extends BaseApp {
         this.state = {
             ...this.state,
             dataPoint: 0,
-            gaugeData: getGaugeData(0),
         };
     }
 
     handleMessage = (event) => {
-        const newDataPoint = parseFloat(event.data) / 10;
+        const newDataPoint = (parseFloat(event.data) / 10) * 1.5;
         this.setState((prevState) => ({
             dataPoint: newDataPoint,
-            gaugeData: getGaugeData(newDataPoint),
         }));
     };
 
@@ -82,9 +76,8 @@ export class ExtendedApp extends BaseApp {
                 },
             },
             responsive: true,
-            aspectRatio: 1,
-            maintainAspectRatio: false,
-            barPercentage: 0.5,
+
+            barPercentage: 100,
             plugins: {
                 legend: {display: false},
                 datalabels: {
@@ -100,50 +93,67 @@ export class ExtendedApp extends BaseApp {
             }
         };
 
-        const gaugeOptions = {
-            responsive: true,
-            greenFrom: 0.4,
-            greenTo: 0.8,
-            yellowFrom: 0.8,
-            yellowTo: 1.3,
-            redFrom: 1.3,
-            redTo: 1.5,
-            minorTicks: 3,
-            min: minPressure,
-            max: maxPressure,
-            majorTicks: [0, 0.5, 1, 1.5],
-            height: 300,
-            width: 300
-        };
 
-        const gaugeAndEnergy = (gaugeTitle, energyTitle) => (
-            <div style={{display: 'flex', flexDirection: 'column', justifyItems: 'center', alignItems: 'center'}}>
-                {gaugeTitle}
+        const backgroundImageMap = {
+            'hebrew': mainBackgroundHebrew,
+            'english': mainBackgroundEnglish,
+            'arabic': mainBackgroundArabic
+        }
+
+        const maxBar = Math.max(pressureToJoule(maxPressure), pressureToCalorie(maxPressure))
+        const mainBackground = `url(${backgroundImageMap[this.languages[currentLanguageIndex]]})`
+        const gaugeAndEnergy = () => (
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyItems: 'center',
+                alignItems: 'center',
+                backgroundImage: mainBackground,
+                backgroundRepeat: "no-repeat",
+                width: '4500px'
+            }}>
                 <div style={{
                     display: 'flex',
                     flexDirection: 'row',
                     justifyContent: 'center',
                 }}>
-                    <GaugeChart data={gaugeData} options={gaugeOptions}/>
+                    <DesignedGaugeChart data={dataPoint} min={minPressure} max={maxPressure}/>
                 </div>
-                {energyTitle}
-                <div style={{display: 'flex', flexDirection: 'row'}}>
-                    <EnergyChart data={jouleChartData} options={barOptions}/>
-                    <EnergyChart data={calorieChartData} options={barOptions}/>
+                <p style={{marginTop: "-34%", fontSize: '8rem'}}>{dataPoint.toFixed(1)}</p>
+                <div style={{display: 'flex', flexDirection: 'row', marginTop: '-450px'}}>
+                    <div style={{marginRight: '-3300px', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                        <BarChartWithPNG data={pressureToJoule(dataPoint)} min={0} max={maxBar}/>
+                        <p style={{marginTop: "-750px", fontSize: '8rem', marginLeft: '100px'}}>{pressureToJoule(dataPoint).toFixed(1)}</p>
+                    </div>
+                    <div
+                        style={{paddingRight: '100px', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                        <BarChartWithPNG data={pressureToCalorie(dataPoint)} min={0} max={maxBar}/>
+                        <p style={{
+                            marginTop: "-750px",
+                            fontSize: '8rem',
+                            marginLeft: '100px'
+                        }}>{pressureToCalorie(dataPoint).toFixed(1)}</p>
+
+                    </div>
                 </div>
             </div>
         );
 
-        if (dataPoint > 0) {
-            return FillTextAccordingToLanguage(
-                this.languages[currentLanguageIndex],
-                gaugeAndEnergy
-            );
+        if (dataPoint >= 0) {
+            return <div style={{
+                height: '100vh',
+                display: 'flex',
+                justifyContent: 'center',
+                flexDirection: 'column',
+                scale: '20%'
+            }}>
+                {gaugeAndEnergy()}
+            </div>;
         } else if (dataPoint < 0) {
             this.updateLanguage()
         }
 
-        const indexPath = require(`./assets/images/index_${this.languages[currentLanguageIndex]}.jpg`);
+        const indexPath = require(`./assets/images/screens/index_${this.languages[currentLanguageIndex]}.jpg`);
         return (
             <div>
                 <img src={indexPath} width={'100%'} height={'100%'}

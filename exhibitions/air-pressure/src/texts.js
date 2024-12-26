@@ -10,8 +10,6 @@ const hebrewEnergyTitle = <h2 className={'Hebrew Subtitle'}>האנרגיה במ�
 export const texts = {
     'hebrew': {
         pageTitle: hebrewPageTitle,
-        gaugeTitle: hebrewGaugeTitle,
-        energyTitle: hebrewEnergyTitle
     },
     'english': {
         pageTitle: null,
@@ -29,13 +27,11 @@ export function FillTextAccordingToLanguage(language, gaugeAndEnergy) {
     return (
         <div style={{
             height: '100vh',
-            width: '70vw',
             display: 'flex',
             justifyContent: 'center',
             flexDirection: 'column'
         }}>
-            {texts[language].pageTitle}
-            {gaugeAndEnergy(texts[language].gaugeTitle, texts[language].energyTitle)}
+            {gaugeAndEnergy()}
         </div>
     );
 }
