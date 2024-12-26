@@ -146,7 +146,7 @@ export class ExtendedApp extends BaseApp {
                 display: 'flex',
                 justifyContent: 'center',
                 flexDirection: 'column',
-                scale: '15%'
+                scale: '25%'
             }}>
                 {gaugeAndEnergy()}
             </div>;
