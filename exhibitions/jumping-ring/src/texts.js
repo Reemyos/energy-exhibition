@@ -37,7 +37,7 @@ export function FillTextAccordingToLanguage(language, barChart) {
         }}>
             {texts[language].pageTitle}
             {texts[language].instructions}
-            {barChart(texts[language].barTitle)}
+            {barChart()}
         </div>
     );
 }

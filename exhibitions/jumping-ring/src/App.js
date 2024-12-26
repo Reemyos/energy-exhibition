@@ -4,6 +4,7 @@ import {FillTextAccordingToLanguage} from './texts';
 import {BarChart} from './components';
 import {barOptions, voltageToCoulomb, voltageToJoules} from "./utils";
 
+const threshold = 0;
 
 export class ExtendedApp extends BaseApp {
     constructor(props) {
@@ -79,7 +80,7 @@ export class ExtendedApp extends BaseApp {
         const jouleMargin = 30;
         const jouleBarOptions = barOptions(maxJoule, jouleMargin);
 
-        const barChart = (title) => (
+        const barChart = () => (
             <div style={{display: 'flex', flexDirection: 'row', alignSelf: 'center', height: '50vh'}}>
                 <BarChart data={voltChartData} options={voltageBarOptions}/>
                 <BarChart data={coulombChartData} options={coulombBarOptions}/>
@@ -87,10 +88,19 @@ export class ExtendedApp extends BaseApp {
             </div>
         );
 
-        return FillTextAccordingToLanguage(
-            this.languages[currentLanguageIndex],
-            barChart
-        );
+        if (voltage > threshold) {
+            return FillTextAccordingToLanguage(
+                this.languages[currentLanguageIndex],
+                barChart
+            );
+        } else {
+            return (
+                <div>
+                    <img src={require('./assets/images/index_hebrew.png')} width={'100%'} height={'100%'}
+                         alt={''}/>
+                </div>
+            );
+        }
     }
 }
 
