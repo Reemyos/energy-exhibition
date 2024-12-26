@@ -110,7 +110,8 @@ export class ExtendedApp extends BaseApp {
                 alignItems: 'center',
                 backgroundImage: mainBackground,
                 backgroundRepeat: "no-repeat",
-                width: '4500px'
+                width: '4500px',
+                height: '8000px'
             }}>
                 <div style={{
                     display: 'flex',
@@ -144,6 +145,7 @@ export class ExtendedApp extends BaseApp {
                 display: 'flex',
                 justifyContent: 'center',
                 flexDirection: 'column',
+                scale: '15%'
             }}>
                 {gaugeAndEnergy()}
             </div>;

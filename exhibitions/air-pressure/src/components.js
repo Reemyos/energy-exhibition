@@ -41,9 +41,7 @@ export function DesignedGaugeChart({data, min, max}) {
         <div>
             <img src={gaugeBackground} alt={'Background'}/>
         </div>
-        <div style={{marginTop: '-500px'}}>
-            <DesignedGaugePin data={data} min={min} max={max}/>
-        </div>
+        <DesignedGaugePin data={data} min={min} max={max}/>
     </div>
 }
 
