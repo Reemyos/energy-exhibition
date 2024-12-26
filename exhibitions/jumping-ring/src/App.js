@@ -93,14 +93,17 @@ export class ExtendedApp extends BaseApp {
                 this.languages[currentLanguageIndex],
                 barChart
             );
-        } else {
-            return (
-                <div>
-                    <img src={require('./assets/images/index_hebrew.png')} width={'100%'} height={'100%'}
-                         alt={''}/>
-                </div>
-            );
+        } else if (voltage < 0) {
+            this.updateLanguage()
         }
+
+        const indexPath = require(`./assets/images/index_${this.languages[currentLanguageIndex]}.png`);
+        return (
+            <div>
+                <img src={indexPath} width={'100%'} height={'100%'}
+                     alt={''}/>
+            </div>
+        );
     }
 }
 

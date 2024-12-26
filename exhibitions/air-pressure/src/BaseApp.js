@@ -9,7 +9,7 @@ export class BaseApp extends Component {
             currentLanguageIndex: 0,
         };
 
-        this.languages = ['Hebrew', 'English', 'Arabic'];
+        this.languages = ['hebrew', 'english', 'arabic'];
         this.reconnectIntervalRef = null;
         this.ws = null;
     }
@@ -58,6 +58,10 @@ export class BaseApp extends Component {
             }
         };
     };
+
+    updateLanguage = () => {
+        this.currentLanguageIndex = (this.currentLanguageIndex + 1) % 3
+    }
 
     handleMessage = (event) => {
         // Default behavior; override this in extended class
