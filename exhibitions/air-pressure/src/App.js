@@ -22,7 +22,7 @@ export class ExtendedApp extends BaseApp {
     }
 
     handleMessage = (event) => {
-        const newDataPoint = (parseFloat(event.data) / 10) * 1.5;
+        const newDataPoint = parseFloat(event.data) / 10;
         this.setState((prevState) => ({
             dataPoint: newDataPoint,
         }));
@@ -140,7 +140,7 @@ export class ExtendedApp extends BaseApp {
             </div>
         );
 
-        if (dataPoint >= 0) {
+        if (dataPoint > 0) {
             return <div style={{
                 height: '100vh',
                 display: 'flex',
