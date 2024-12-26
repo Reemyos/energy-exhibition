@@ -86,7 +86,7 @@ export class ExtendedApp extends BaseApp {
             maintainAspectRatio: false,
             barPercentage: 0.5,
             plugins: {
-                legend: { display: false },
+                legend: {display: false},
                 datalabels: {
                     color: '#000', // Label color
                     anchor: 'end', // Position the label near the bar's end
@@ -117,23 +117,36 @@ export class ExtendedApp extends BaseApp {
         };
 
         const gaugeAndEnergy = (gaugeTitle, energyTitle) => (
-            <div style={{display: 'grid', justifyItems: 'center', gridColumnGap: '100px', marginBottom: '20%'}}>
-                <div style={{gridRow: 1, gridColumn: 1}}>{gaugeTitle}</div>
-                <div style={{gridRow: 2, gridColumn: 1, display: 'flex', flexDirection: 'row', justifyContent: 'center', paddingTop: '50%'}}>
+            <div style={{display: 'flex', flexDirection: 'column', justifyItems: 'center', alignItems: 'center'}}>
+                {gaugeTitle}
+                <div style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                }}>
                     <GaugeChart data={gaugeData} options={gaugeOptions}/>
                 </div>
-                <div style={{gridRow: 1, gridColumn: 2, marginRight: '20%'}}>{energyTitle}</div>
-                <div style={{gridRow: 2, gridColumn: 2, display: 'flex', flexDirection: 'row'}}>
+                {energyTitle}
+                <div style={{display: 'flex', flexDirection: 'row'}}>
                     <EnergyChart data={jouleChartData} options={barOptions}/>
                     <EnergyChart data={calorieChartData} options={barOptions}/>
                 </div>
             </div>
         );
 
-        return FillTextAccordingToLanguage(
-            this.languages[currentLanguageIndex],
-            gaugeAndEnergy
-        );
+        if (dataPoint > 0) {
+            return FillTextAccordingToLanguage(
+                this.languages[currentLanguageIndex],
+                gaugeAndEnergy
+            );
+        } else {
+            return (
+                <div>
+                    <img src={require('./assets/images/index_air_pressure.png')} width={'100%'} height={'100%'}
+                         alt={''}/>
+                </div>
+            );
+        }
     }
 }
 

@@ -71,25 +71,9 @@ export class BaseApp extends Component {
     };
 
     render() {
-        const { isConnected, currentLanguageIndex } = this.state;
-        const connectionIndicatorStyle = {
-            width: '15px',
-            height: '15px',
-            borderRadius: '50%',
-            backgroundColor: isConnected ? '#339409' : '#ad0909',
-            marginTop: '10px',
-            marginLeft: '10px',
-            display: 'inline-block',
-            alignSelf: 'flex-start',
-        };
-
         return (
             <div className={'App-container'}>
-                <div style={connectionIndicatorStyle}></div>
                 {this.renderContent()}
-                <button onClick={this.changeLanguage} style={{ marginTop: '10px' }}>
-                    {this.languages[currentLanguageIndex]}
-                </button>
             </div>
         );
     }
