@@ -27,7 +27,7 @@ export class ExtendedApp extends BaseApp {
     }
 
     handleMessage = (event) => {
-        const newDataPoint = (parseFloat(event.data) / 10) * 1.5;
+        const newDataPoint = parseFloat(event.data) / 10;
         this.setState((prevState) => ({
             dataPoint: newDataPoint,
             gaugeData: getGaugeData(newDataPoint),
