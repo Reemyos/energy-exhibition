@@ -9,17 +9,17 @@ const hebrewInstructions =
     </div>
 
 export const texts = {
-    'Hebrew': {
+    'hebrew': {
         pageTitle: hebrewPageTitle,
         instructions: hebrewInstructions,
         barTitle: null
     },
-    'English': {
+    'english': {
         pageTitle: null,
         instructions: null,
         barTitle: null
     },
-    'Arabic': {
+    'arabic': {
         pageTitle: null,
         instructions: null,
         barTitle: null

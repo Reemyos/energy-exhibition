@@ -143,7 +143,7 @@ export class ExtendedApp extends BaseApp {
             this.updateLanguage()
         }
 
-        const indexPath = require(`./assets/images/index_${this.languages[currentLanguageIndex]}.png`);
+        const indexPath = require(`./assets/images/index_${this.languages[currentLanguageIndex]}.jpg`);
         return (
             <div>
                 <img src={indexPath} width={'100%'} height={'100%'}

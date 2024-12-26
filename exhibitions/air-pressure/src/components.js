@@ -3,7 +3,7 @@ import React from "react";
 import {Bar} from "react-chartjs-2";
 import {Chart, registerables} from 'chart.js';
 import './idGeneratedStyles.css';
-import gaugeImage from './assets/images/gauge.png';
+// import gaugeImage from './assets/images/gauge.png';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 Chart.register(...registerables, ChartDataLabels);
@@ -64,7 +64,7 @@ export function DesignedGaugeBackground() {
             </div>
         </div>
         <div id="_idContainer074">
-            <img className="_idGenObjectAttribute-1 _idGenObjectAttribute-2" src={gaugeImage} alt=""/>
+            <img className="_idGenObjectAttribute-1 _idGenObjectAttribute-2" src={''} alt=""/>
         </div>
     </div>
 }
