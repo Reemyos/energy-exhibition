@@ -2,10 +2,8 @@ import React from 'react';
 import BaseApp from './BaseApp.js';
 import {FillTextAccordingToLanguage} from './texts';
 import {BarChart} from './components';
-import {voltageToAmp} from "./utils";
+import {barOptions, voltageToCoulomb, voltageToJoules} from "./utils";
 
-
-const maxVoltage = 936;
 
 export class ExtendedApp extends BaseApp {
     constructor(props) {
@@ -18,7 +16,7 @@ export class ExtendedApp extends BaseApp {
     }
 
     handleMessage = (event) => {
-        const newVoltage = parseInt(event.data) * 93.6;
+        const newVoltage = parseInt(event.data) * 30;
         this.setState((prevState) => ({
             voltage: newVoltage
         }));
@@ -26,13 +24,27 @@ export class ExtendedApp extends BaseApp {
 
     renderContent() {
         const {voltage, currentLanguageIndex} = this.state;
-
-        const ampChartData = {
-            labels: ['Amp'],
+        
+        const voltChartData = {
+            labels: ['volt'],
             datasets: [
                 {
-                    label: 'Amp',
-                    data: [voltageToAmp(voltage)],
+                    label: 'volt',
+                    data: [voltage],
+                    backgroundColor: 'rgba(100, 150, 220, 0.2)',
+                    borderColor: 'rgba(100, 150, 220, 1)',
+                    borderWidth: 1,
+                    tension: 0.1,
+                },
+            ],
+        };
+
+        const coulombChartData = {
+            labels: ['Coulomb'],
+            datasets: [
+                {
+                    label: 'Coulomb',
+                    data: [voltageToCoulomb(voltage)],
                     backgroundColor: 'rgba(100, 220, 150, 0.2)',
                     borderColor: 'rgba(100, 220, 150, 1)',
                     borderWidth: 1,
@@ -41,48 +53,38 @@ export class ExtendedApp extends BaseApp {
             ],
         };
 
-        const valueMargin = 100;
-        const barOptions = {
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    min: 0,
-                    max: voltageToAmp(maxVoltage) + valueMargin,
-                    ticks: {display: false},
-                    grid: {display: false},
-                    border: {display: false},
+        const jouleChartData = {
+            labels: ['Joules'],
+            datasets: [
+                {
+                    label: 'Joules',
+                    data: [voltageToJoules(voltage)],
+                    backgroundColor: 'rgba(220, 100, 150, 0.2)',
+                    borderColor: 'rgba(220, 100, 150, 1)',
+                    borderWidth: 1,
+                    tension: 0.1,
                 },
-                x: {
-                    grid: {display: false},
-                    border: {display: false},
-                },
-            },
-            responsive: true,
-            aspectRatio: 1,
-            maintainAspectRatio: false,
-            barPercentage: 0.5,
-            plugins: {
-                legend: { display: false },
-                datalabels: {
-                    color: '#000', // Label color
-                    anchor: 'end', // Position the label near the bar's end
-                    align: 'top',  // Align the label on top of the bar
-                    formatter: (value) => value.toFixed(2), // Format the label value
-                    font: {
-                        size: 12,
-                        weight: 'bold',
-                    },
-                }
-            }
+            ],
         };
 
+        const maxVoltage = 300;
+        const voltageMargin = 100;
+        const voltageBarOptions = barOptions(maxVoltage, voltageMargin);
+
+        const maxCoulomb = 1.5;
+        const coulombMargin = 0.5;
+        const coulombBarOptions = barOptions(maxCoulomb, coulombMargin);
+
+        const maxJoule = 220;
+        const jouleMargin = 30;
+        const jouleBarOptions = barOptions(maxJoule, jouleMargin);
+
         const barChart = (title) => (
-            // <div style={{display: 'grid', justifyItems: 'center', marginBottom: '20%', height:'80vh'}}>
-            //     <div style={{gridRow: 1, gridColumn: 1}}>{title}</div>
             <div style={{display: 'flex', flexDirection: 'row', alignSelf: 'center', height: '50vh'}}>
-                <BarChart data={ampChartData} options={barOptions}/>
+                <BarChart data={voltChartData} options={voltageBarOptions}/>
+                <BarChart data={coulombChartData} options={coulombBarOptions}/>
+                <BarChart data={jouleChartData} options={jouleBarOptions}/>
             </div>
-            // </div>
         );
 
         return FillTextAccordingToLanguage(
