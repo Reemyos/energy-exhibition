@@ -37,7 +37,7 @@ export function DesignedGaugePin({data, min, max}) {
 
 
 export function DesignedGaugeChart({data, min, max}) {
-    return <div style={{display: 'inline-block', marginTop: '25%', alignItems: 'center'}}>
+    return <div style={{display: 'inline-block', marginTop: '18%', alignItems: 'center'}}>
         <div>
             <img src={gaugeBackground} alt={'Background'}/>
         </div>

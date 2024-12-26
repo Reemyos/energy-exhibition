@@ -110,6 +110,7 @@ export class ExtendedApp extends BaseApp {
                 alignItems: 'center',
                 backgroundImage: mainBackground,
                 backgroundRepeat: "no-repeat",
+                backgroundPosition: 'center',
                 width: '4500px',
                 height: '8000px'
             }}>
