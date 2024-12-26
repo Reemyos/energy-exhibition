@@ -8,17 +8,17 @@ const hebrewGaugeTitle = <h2 className={'Hebrew Subtitle'}>הלחץ במיכל:<
 const hebrewEnergyTitle = <h2 className={'Hebrew Subtitle'}>האנרגיה במיכל:</h2>;
 
 export const texts = {
-    'Hebrew': {
+    'hebrew': {
         pageTitle: hebrewPageTitle,
         gaugeTitle: hebrewGaugeTitle,
         energyTitle: hebrewEnergyTitle
     },
-    'English': {
+    'english': {
         pageTitle: null,
         gaugeTitle: null,
         energyTitle: null
     },
-    'Arabic': {
+    'arabic': {
         pageTitle: null,
         gaugeTitle: null,
         energyTitle: null
