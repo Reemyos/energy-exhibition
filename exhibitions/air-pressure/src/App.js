@@ -122,18 +122,17 @@ export class ExtendedApp extends BaseApp {
                 <p style={{marginTop: "-34%", fontSize: '8rem'}}>{dataPoint.toFixed(1)}</p>
                 <div style={{display: 'flex', flexDirection: 'row', marginTop: '-450px'}}>
                     <div style={{marginRight: '-3300px', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                        <BarChartWithPNG data={pressureToJoule(dataPoint)} min={0} max={maxBar}/>
+                        <BarChartWithPNG data={pressureToJoule(dataPoint)} min={0} max={maxBar} backgroundColor={'#70D64D'} strokeColor={'rgba(112, 214, 77, 0.7)'}/>
                         <p style={{marginTop: "-750px", fontSize: '8rem', marginLeft: '100px'}}>{pressureToJoule(dataPoint).toFixed(1)}</p>
                     </div>
                     <div
                         style={{paddingRight: '100px', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                        <BarChartWithPNG data={pressureToCalorie(dataPoint)} min={0} max={maxBar}/>
+                        <BarChartWithPNG data={pressureToCalorie(dataPoint)} min={0} max={maxBar} backgroundColor={'#B9E972'} strokeColor={'rgba(185, 233, 114, 0.7)'}/>
                         <p style={{
                             marginTop: "-750px",
                             fontSize: '8rem',
                             marginLeft: '100px'
                         }}>{pressureToCalorie(dataPoint).toFixed(1)}</p>
-
                     </div>
                 </div>
             </div>
@@ -145,7 +144,6 @@ export class ExtendedApp extends BaseApp {
                 display: 'flex',
                 justifyContent: 'center',
                 flexDirection: 'column',
-                scale: '20%'
             }}>
                 {gaugeAndEnergy()}
             </div>;
