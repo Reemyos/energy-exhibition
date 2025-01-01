@@ -18,8 +18,12 @@ MESSAGE_DELAY = 0.4
 def find_arduino_port(baud_rate=9600):
     ports = serial.tools.list_ports.comports()
     for port in ports:
-        if ("Arduino" in port.description or "ttyACM" in port.device or "ttyUSB" in port.device or
-                'usbserial' in port.device):
+        if (
+            "Arduino" in port.description
+            or "ttyACM" in port.device
+            or "ttyUSB" in port.device
+            or "usbserial" in port.device
+        ):
             try:
                 ser = serial.Serial(port.device, baud_rate)
                 logger.info(f"Connected to {port.device}")
@@ -35,7 +39,7 @@ async def arduino_websocket_handler(websocket, serial_connection):
     try:
         while True:
             # Read a line from the serial port
-            data = serial_connection.readline().decode('utf-8').strip()
+            data = serial_connection.readline().decode("utf-8").strip()
             if data:
                 await websocket.send(data)
                 logger.info(f"Sent: {data}")
@@ -68,8 +72,12 @@ async def virtual_websocket_handler(websocket, *args):
 async def start_websocket_server(serial_connection, use_virtual_port=False):
     # Start the WebSocket server
     logger.info("Starting WebSocket server on ws://localhost:9001")
-    handler = arduino_websocket_handler if not use_virtual_port else virtual_websocket_handler
-    async with websockets.serve(lambda ws: handler(ws, serial_connection), 'localhost', 9001):
+    handler = (
+        arduino_websocket_handler if not use_virtual_port else virtual_websocket_handler
+    )
+    async with websockets.serve(
+        lambda ws: handler(ws, serial_connection), "localhost", 9001
+    ):
         await asyncio.Future()  # Keep server running indefinitely
 
 
@@ -77,12 +85,16 @@ async def main(use_virtual_port=False):
     serial_connection = find_arduino_port()
 
     # Start WebSocket server in a background task
-    websocket_task = asyncio.create_task(start_websocket_server(serial_connection, use_virtual_port))
+    websocket_task = asyncio.create_task(
+        start_websocket_server(serial_connection, use_virtual_port)
+    )
 
     try:
         # Loop to detect disconnection and attempt reconnection
         while True:
-            if (not serial_connection or not serial_connection.is_open) and not use_virtual_port:
+            if (
+                not serial_connection or not serial_connection.is_open
+            ) and not use_virtual_port:
                 logger.info("Serial device disconnected. Retrying in 5 seconds...")
                 await asyncio.sleep(5)
                 serial_connection = find_arduino_port()
@@ -90,7 +102,9 @@ async def main(use_virtual_port=False):
                 # Restart the WebSocket server if reconnected
                 if serial_connection and serial_connection.is_open:
                     websocket_task.cancel()  # Cancel the existing WebSocket task
-                    websocket_task = asyncio.create_task(start_websocket_server(serial_connection))
+                    websocket_task = asyncio.create_task(
+                        start_websocket_server(serial_connection)
+                    )
             await asyncio.sleep(1)  # Avoid busy-waiting
     except asyncio.CancelledError:
         logger.info("Server stopped.")
