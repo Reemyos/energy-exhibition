@@ -34,8 +34,7 @@ export class ExtendedApp extends BaseApp {
     const maxJoule = 220;
 
     const barChart = () => (
-      <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', height: '100%', width: '100%'}}>
-
+      <div style={{ display: 'flex', flexDirection: 'row', justifyItems: 'center', height: '100%', width: '100%'}}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1 }}>
           <BarChartWithPNG data={voltage} min={0} max={maxVoltage} backgroundColor={'#01a6e1'} strokeColor={'rgba(1,166,225,0.7)'} />
           <p style={{ fontSize: '2rem', }}>{voltage.toFixed(1)}</p>

@@ -16,7 +16,7 @@ export function BarChart({ data, options }) {
 }
 
 export const BarChartWithPNG = ({ data, min, max, strokeColor, backgroundColor }) => {
-  const maxBarHeight = 3200; // Adjust this to fit the PNG container if needed
+  const maxBarHeight = 41; // Adjust this to fit the PNG container if needed
   const normalizedData = (data - min) / (max - min); // Normalize the data between 0 and 1
   const barLength = normalizedData * maxBarHeight;
 
@@ -36,10 +36,10 @@ export const BarChartWithPNG = ({ data, min, max, strokeColor, backgroundColor }
         style={{
           position: 'absolute',
           bottom: '29.7%', // Position bars from the bottom to ensure they grow upwards
-          left: '51%', // Center horizontally
+          left: '51.2%', // Center horizontally
           transform: 'translateX(-50%)', // Center the bar by adjusting with translateX
-          width: '11%', // Adjust bar width percentage as needed for responsiveness
-          height: `${barLength}px`, // Dynamically set the height based on normalized data
+          width: '10.8%', // Adjust bar width percentage as needed for responsiveness
+          height: `${barLength}%`, // Dynamically set the height based on normalized data
           backgroundColor: backgroundColor, // Bar color
           border: `3px solid ${strokeColor}`, // Adjust border width if needed
         }}
