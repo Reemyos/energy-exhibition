@@ -45,7 +45,7 @@ export class ExtendedApp extends BaseApp {
           alignItems: 'center',
           justifyItems: 'center',
           flex: 1,
-          marginLeft: '-80%',
+          marginLeft: '-1050px',
           height: '100%',
           width: '100%'
         }}>
@@ -58,7 +58,7 @@ export class ExtendedApp extends BaseApp {
           alignItems: 'center',
           justifyItems: 'center',
           flex: 1,
-          marginLeft: '-80%',
+          marginLeft: '-1050px',
           height: '100%',
           width: '100%'
         }}>
