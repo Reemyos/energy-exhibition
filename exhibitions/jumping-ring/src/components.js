@@ -23,23 +23,26 @@ export const BarChartWithPNG = ({ data, min, max, strokeColor, backgroundColor }
   return (
     <div
       style={{
-        width: '100%', // Use relative width for responsiveness
-        height: '100%', // Use relative height for responsiveness
+        width: '400px',     // Fixed width
+        height: '500px',    // Fixed height
         backgroundImage: `url(${barContainer})`,
-        backgroundSize: 'contain', // Ensure the PNG fits without distortion
-        backgroundPosition: 'center',
+        backgroundSize: 'contain',
+        backgroundPosition: 'center bottom', // Align to bottom
         backgroundRepeat: 'no-repeat',
         position: 'relative',
+        display: 'flex',
+        alignItems: 'flex-end',
+        justifyContent: 'center',
       }}
     >
       <div
         style={{
           position: 'absolute',
-          bottom: '29.7%', // Position bars from the bottom to ensure they grow upwards
-          left: '51.2%', // Center horizontally
-          transform: 'translateX(-50%)', // Center the bar by adjusting with translateX
-          width: '10.8%', // Adjust bar width percentage as needed for responsiveness
-          height: `${barLength}%`, // Dynamically set the height based on normalized data
+          transform: `transformX(-50%)`,
+          bottom: '106.9px',
+          left: '45.2%',
+          width: '10.7%', // Adjust bar width percentage as needed
+          height: `${barLength}%`, // Dynamically set height based on normalized data
           backgroundColor: backgroundColor, // Bar color
           border: `3px solid ${strokeColor}`, // Adjust border width if needed
         }}
@@ -47,4 +50,3 @@ export const BarChartWithPNG = ({ data, min, max, strokeColor, backgroundColor }
     </div>
   );
 };
-
