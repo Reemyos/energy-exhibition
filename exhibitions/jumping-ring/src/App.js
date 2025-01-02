@@ -77,6 +77,7 @@ export class ExtendedApp extends BaseApp {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
+          backgroundColor: '#eafcf9'
         }}>
           <div style={{
             display: 'flex',
