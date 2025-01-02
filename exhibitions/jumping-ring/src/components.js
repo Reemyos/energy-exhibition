@@ -16,34 +16,35 @@ export function BarChart({ data, options }) {
 }
 
 export const BarChartWithPNG = ({ data, min, max, strokeColor, backgroundColor }) => {
-  const maxBarHeight = 2040; // Adjust to fit your PNG container
-  const normalizedData = [(data - min) / (max - min)]
-  const barContainerUrl = `url(${barContainer})`
+  const maxBarHeight = 3200; // Adjust this to fit the PNG container if needed
+  const normalizedData = (data - min) / (max - min); // Normalize the data between 0 and 1
   const barLength = normalizedData * maxBarHeight;
+
   return (
     <div
       style={{
-        // position: 'relative',
-        width: '4500px',
-        height: '4500px',
-        backgroundImage: barContainerUrl, // PNG file
-        backgroundSize: 'cover',
+        width: '100%', // Use relative width for responsiveness
+        height: '100%', // Use relative height for responsiveness
+        backgroundImage: `url(${barContainer})`,
+        backgroundSize: 'contain', // Ensure the PNG fits without distortion
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        position: 'relative',
       }}
     >
-      {normalizedData.map((value, index) => (
-        <div
-          key={index}
-          style={{
-            position: 'relative',
-            top: `${3200 - barLength}px`,
-            left: 2030,
-            width: '470px', // Bar width
-            height: `${barLength}px`, // Scale height based on data
-            backgroundColor: backgroundColor, // Bar color
-            border: `40px solid ${strokeColor}`,
-          }}
-        />
-      ))}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '29.7%', // Position bars from the bottom to ensure they grow upwards
+          left: '51%', // Center horizontally
+          transform: 'translateX(-50%)', // Center the bar by adjusting with translateX
+          width: '11%', // Adjust bar width percentage as needed for responsiveness
+          height: `${barLength}px`, // Dynamically set the height based on normalized data
+          backgroundColor: backgroundColor, // Bar color
+          border: `3px solid ${strokeColor}`, // Adjust border width if needed
+        }}
+      />
     </div>
   );
 };
+
