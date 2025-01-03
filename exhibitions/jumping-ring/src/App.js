@@ -21,7 +21,7 @@ export class ExtendedApp extends BaseApp {
 
   handleMessage = (event) => {
     const newVoltage = parseInt(event.data) * 30;
-    this.setState((prevState) => ({
+    this.setState(() => ({
       voltage: newVoltage
     }));
   };
@@ -30,8 +30,8 @@ export class ExtendedApp extends BaseApp {
     const { voltage, currentLanguageIndex } = this.state;
 
     const maxVoltage = 300;
-    const maxCoulomb = 1.5;
-    const maxJoule = 220;
+    const maxCoulombs = 1.5;
+    const maxJoules = 220;
 
     const barChart = () => (
       <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: '500px', width: '100%' }}>
@@ -49,7 +49,7 @@ export class ExtendedApp extends BaseApp {
           height: '100%',
           width: '100%'
         }}>
-          <BarChartWithPNG data={voltageToCoulomb(voltage)} min={0} max={maxCoulomb} backgroundColor={'#695cc7'} strokeColor={'rgba(105,92,199,0.7)'} />
+          <BarChartWithPNG data={voltageToCoulomb(voltage)} min={0} max={maxCoulombs} backgroundColor={'#695cc7'} strokeColor={'rgba(105,92,199,0.7)'} />
           <p style={{ fontSize: '1rem', }}>{voltageToCoulomb(voltage).toFixed(1)}</p>
         </div>
         <div style={{
@@ -62,7 +62,7 @@ export class ExtendedApp extends BaseApp {
           height: '100%',
           width: '100%'
         }}>
-          <BarChartWithPNG data={voltageToJoules(voltage)} min={0} max={maxJoule} backgroundColor={'#ff6a01'} strokeColor={'rgba(255,106,1,0.7)'} />
+          <BarChartWithPNG data={voltageToJoules(voltage)} min={0} max={maxJoules} backgroundColor={'#ff6a01'} strokeColor={'rgba(255,106,1,0.7)'} />
           <p style={{ fontSize: '1rem', }}>{voltageToJoules(voltage).toFixed(1)}</p>
         </div>
       </div>
