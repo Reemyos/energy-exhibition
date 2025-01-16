@@ -5,13 +5,34 @@ import time
 
 import serial
 import serial.tools.list_ports
-import websockets
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 
 
-logging.basicConfig(level=logging.INFO)
+class LogMessage(BaseModel):
+    message: str
+
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    filename="../usage.log",
+    filemode="a",
+)
 logger = logging.getLogger(__name__)
 
+
 MESSAGE_DELAY = 0.4
+
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Replace "*" with the specific origin if needed
+    allow_methods=["*"],  # Allow all methods (POST, GET, etc.)
+    allow_headers=["*"],  # Allow all headers
+)
 
 
 # Helper function to find an Arduino on an open serial port
@@ -34,87 +55,75 @@ def find_arduino_port(baud_rate=9600):
     return None
 
 
-# WebSocket handler that sends serial data to connected clients
-async def arduino_websocket_handler(websocket, serial_connection):
+# WebSocket handler for Arduino
+async def arduino_websocket_handler(websocket: WebSocket, serial_connection):
     try:
         while True:
-            # Read a line from the serial port
             data = serial_connection.readline().decode("utf-8").strip()
             if data:
-                await websocket.send(data)
-                logger.info(f"Sent: {data}")
-    except serial.serialutil.SerialException:
+                await websocket.send_text(data)
+    except serial.SerialException:
         logger.error("Serial connection shut down.")
         serial_connection.close()
-    except websockets.ConnectionClosed:
-        logger.info("Client disconnected.")
+    except WebSocketDisconnect:
+        logger.info("WebSocket client disconnected.")
 
 
-async def virtual_websocket_handler(websocket, *args):
+# WebSocket handler for virtual data
+async def virtual_websocket_handler(websocket: WebSocket, *args):
     value = 0  # Start at 0
-    while True:
-        # If value is at max, reset to 0 randomly to avoid predictable patterns
-        if value >= 10:
-            if random.random() < 0.3:  # 30% chance to reset to 0
-                value = 0
+    try:
+        while True:
+            if value >= 10:
+                if random.random() < 0.3:  # 30% chance to reset to 0
+                    value = 0
+                else:
+                    value = 10  # Hold 10 for some cycles without reset
             else:
-                value = 10  # Hold 10 for some cycles without reset
-        else:
-            # Increment value by 0 or 1 to keep it non-decreasing
-            value += random.choice([0, 1])
+                value += random.choice([0, 1])  # Increment by 0 or 1
 
-        message = f"{value}\n"
-        await websocket.send(message)
-        logger.info(f"Sent: {message.strip()}")
-        time.sleep(MESSAGE_DELAY)
+            message = f"{value}"
+            await websocket.send_text(message)
+            await asyncio.sleep(MESSAGE_DELAY)
+    except WebSocketDisconnect:
+        logger.info("WebSocket client disconnected.")
 
 
-async def start_websocket_server(serial_connection, use_virtual_port=False):
-    # Start the WebSocket server
-    logger.info("Starting WebSocket server on ws://localhost:9001")
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket, use_virtual_port: bool = False):
+    await websocket.accept()
+    logger.info("WebSocket client connected.")
+    serial_connection = None
+    if not use_virtual_port:
+        serial_connection = find_arduino_port()
+        if not serial_connection:
+            await websocket.close(code=1011)
+            logger.error("No Arduino device found.")
+            return
     handler = (
         arduino_websocket_handler if not use_virtual_port else virtual_websocket_handler
     )
-    async with websockets.serve(
-        lambda ws: handler(ws, serial_connection), "localhost", 9001
-    ):
-        await asyncio.Future()  # Keep server running indefinitely
+    await handler(websocket, serial_connection)
 
 
-async def main(use_virtual_port=False):
-    serial_connection = find_arduino_port()
-
-    # Start WebSocket server in a background task
-    websocket_task = asyncio.create_task(
-        start_websocket_server(serial_connection, use_virtual_port)
-    )
-
-    try:
-        # Loop to detect disconnection and attempt reconnection
-        while True:
-            if (
-                not serial_connection or not serial_connection.is_open
-            ) and not use_virtual_port:
-                logger.info("Serial device disconnected. Retrying in 5 seconds...")
-                await asyncio.sleep(5)
-                serial_connection = find_arduino_port()
-
-                # Restart the WebSocket server if reconnected
-                if serial_connection and serial_connection.is_open:
-                    websocket_task.cancel()  # Cancel the existing WebSocket task
-                    websocket_task = asyncio.create_task(
-                        start_websocket_server(serial_connection)
-                    )
-            await asyncio.sleep(1)  # Avoid busy-waiting
-    except asyncio.CancelledError:
-        logger.info("Server stopped.")
-    except KeyboardInterrupt:
-        logger.info("Server interrupted.")
+@app.get("/")
+def root():
+    return {"message": "FastAPI WebSocket Server Running"}
 
 
-# Run the main function
+@app.post("/log")
+async def log_message(log: LogMessage):
+    logger.info(log.message)
+    return {"status": "success"}
+
+
 if __name__ == "__main__":
-    try:
-        asyncio.run(main())
-    except KeyboardInterrupt:
-        logger.error("Server stopped.")
+    import uvicorn
+
+    uvicorn.run(
+        "server:app",
+        host="0.0.0.0",
+        port=8000,
+        log_level="info",
+        reload=True,
+    )
