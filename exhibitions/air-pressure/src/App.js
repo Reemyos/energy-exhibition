@@ -57,44 +57,70 @@ export class ExtendedApp extends BaseApp {
         justifyItems: 'center',
         alignItems: 'center',
         backgroundImage: mainBackground,
+        backgroundSize: 'contain',
         backgroundRepeat: "no-repeat",
         backgroundPosition: 'center',
-        width: '4500px',
-        height: '8000px'
+        width: '100%',
+        height: '100%'
       }}>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '100%',
+          height: '100%'
+        }}>
+          <div style={{
+            display: 'flex',
+            marginLeft: '70%',
+            marginTop: '8%',
+            width: '100%',
+            height: '100%'
+          }}>
+            <DesignedGaugeChart data={dataPoint} min={minPressure} max={maxPressure} />
+          </div>
+          <p style={{ fontSize: '1.5rem', marginTop: '-11.5%' }}>{dataPoint.toFixed(1)}</p>
+        </div>
         <div style={{
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'center',
+          alignItems: 'center',
+          marginTop: '-5.3%',
+          height: '500px',
+          width: '100%'
         }}>
-          <DesignedGaugeChart data={dataPoint} min={minPressure} max={maxPressure} />
-        </div>
-        <p style={{ marginTop: "-34%", fontSize: '8rem' }}>{dataPoint.toFixed(1)}</p>
-        <div style={{ display: 'flex', flexDirection: 'row', marginTop: '-450px' }}>
-          <div style={{ marginRight: '-3300px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center'
+          }}>
             <BarChartWithPNG data={pressureToJoule(dataPoint)} min={0} max={maxBar} backgroundColor={'#70D64D'} strokeColor={'rgba(112, 214, 77, 0.7)'} />
-            <p style={{ marginTop: "-750px", fontSize: '8rem', marginLeft: '100px' }}>{pressureToJoule(dataPoint).toFixed(1)}</p>
+            <p style={{ fontSize: '1.5rem', paddingBottom: '29%', marginTop: '-15%' }}>{pressureToJoule(dataPoint).toFixed(1)}</p>
           </div>
           <div
-            style={{ paddingRight: '100px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              marginLeft: '-18.5%'
+            }}>
             <BarChartWithPNG data={pressureToCalorie(dataPoint)} min={0} max={maxBar} backgroundColor={'#B9E972'} strokeColor={'rgba(185, 233, 114, 0.7)'} />
-            <p style={{
-              marginTop: "-750px",
-              fontSize: '8rem',
-              marginLeft: '100px'
-            }}>{pressureToCalorie(dataPoint).toFixed(1)}</p>
+            <p style={{ fontSize: '1.5rem', paddingBottom: '29%', marginTop: '-15%' }}>{pressureToCalorie(dataPoint).toFixed(1)}</p>
           </div>
         </div>
       </div>
     );
 
-    if (dataPoint > 0) {
+    if (dataPoint >= 0) {
       return <div style={{
         height: '100vh',
+        width: '100vw',
         display: 'flex',
         justifyContent: 'center',
         flexDirection: 'column',
-        scale: '25%'
+        backgroundColor: '#eafcf9'
       }}>
         {gaugeAndEnergy()}
       </div>;

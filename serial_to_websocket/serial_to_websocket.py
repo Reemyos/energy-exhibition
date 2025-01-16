@@ -90,7 +90,7 @@ async def virtual_websocket_handler(websocket: WebSocket, *args):
 
 
 @app.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket, use_virtual_port: bool = False):
+async def websocket_endpoint(websocket: WebSocket, use_virtual_port: bool = True):
     await websocket.accept()
     logger.info("WebSocket client connected.")
     serial_connection = None
@@ -121,7 +121,7 @@ if __name__ == "__main__":
     import uvicorn
 
     uvicorn.run(
-        "server:app",
+        "serial_to_websocket:app",
         host="0.0.0.0",
         port=8000,
         log_level="info",

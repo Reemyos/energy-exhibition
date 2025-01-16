@@ -1,81 +1,76 @@
 import React from "react";
-import { Bar } from "react-chartjs-2";
-import { Chart, registerables } from 'chart.js';
 import './idGeneratedStyles.css';
-import ChartDataLabels from 'chartjs-plugin-datalabels';
 import gaugeBackground from './assets/images/components/gauge_background.png'
 import gaugePin from './assets/images/components/gauge_pin.png'
 import barContainer from './assets/images/components/bar_container.png'
-
-Chart.register(...registerables, ChartDataLabels);
-
-export function EnergyChart({ data, options }) {
-  return <div style={{ height: '40vh', width: '15vw', display: 'flex' }}>
-    <Bar
-      data={data}
-      options={options}
-    />
-  </div>
-}
 
 
 export function DesignedGaugePin({ data, min, max }) {
   // Rotate the pin according to the data
   const angle = ((data - min) / (max - min)) * 195;
   const pointerStyle = {
-    marginTop: '-94%',
-    position: 'absolute',
+    marginTop: '-28.5%',
     transform: ` rotate(${angle}deg)`,
+    transformOrigin: '15% 50%',
   }
 
   return (
     <div style={pointerStyle}>
-      <img src={gaugePin} alt={'Pin'} width={'4500px'} />
+      <img src={gaugePin} alt={'Pin'} width={'30%'} />
     </div>
   );
 }
 
 
 export function DesignedGaugeChart({ data, min, max }) {
-  return <div style={{ display: 'inline-block', marginTop: '18%', alignItems: 'center' }}>
+  return <div style={{
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    height: '100%',
+    position: 'relative'
+  }}>
     <div>
-      <img src={gaugeBackground} alt={'Background'} />
+      <img src={gaugeBackground} alt={'Background'} width={'30%'} />
     </div>
     <DesignedGaugePin data={data} min={min} max={max} />
   </div>
 }
 
 export const BarChartWithPNG = ({ data, min, max, strokeColor, backgroundColor }) => {
-  const maxBarHeight = 2040; // Adjust to fit your PNG container
-  const normalizedData = [(data - min) / (max - min)]
-  const barContainerUrl = `url(${barContainer})`
+  const maxBarHeight = 41; // Adjust this to fit the PNG container if needed
+  const normalizedData = (data - min) / (max - min); // Normalize the data between 0 and 1
   const barLength = normalizedData * maxBarHeight;
+
   return (
     <div
       style={{
-        // position: 'relative',
-        width: '4500px', // Match the PNG dimensions
-        height: '4500px',
-        backgroundImage: barContainerUrl, // PNG file
-        backgroundSize: 'cover',
+        width: '400px',     // Fixed width
+        height: '500px',    // Fixed height
+        backgroundImage: `url(${barContainer})`,
+        backgroundSize: 'contain',
+        backgroundPosition: 'center bottom', // Align to bottom
+        backgroundRepeat: 'no-repeat',
+        position: 'relative',
+        display: 'flex',
+        alignItems: 'flex-end',
+        justifyContent: 'center',
       }}
     >
-      {normalizedData.map((value, index) => (
-        <div
-          key={index}
-          style={{
-            position: 'relative',
-            top: `${3200 - barLength}px`,
-            left: 2030,
-            width: '470px', // Bar width
-            height: `${barLength}px`, // Scale height based on data
-            backgroundColor: backgroundColor, // Bar color
-            border: `40px solid ${strokeColor}`,
-          }}
-        />
-      ))}
+      <div
+        style={{
+          position: 'absolute',
+          transform: `transformX(-50%)`,
+          bottom: '106.9px',
+          left: '45.2%',
+          width: '10.7%', // Adjust bar width percentage as needed
+          height: `${barLength}%`, // Dynamically set height based on normalized data
+          backgroundColor: backgroundColor, // Bar color
+          border: `3px solid ${strokeColor}`, // Adjust border width if needed
+        }}
+      />
     </div>
   );
 };
-
-
