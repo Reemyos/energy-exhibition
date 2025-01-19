@@ -11,7 +11,8 @@ export function DesignedGaugePin({ data, min, max }) {
   const pointerStyle = {
     marginTop: '-75.5%',
     transform: ` rotate(${angle}deg)`,
-    transformOrigin: '15% 50%',
+    transformOrigin: '40% 50%',
+    border: '1px red'
   }
 
   return (

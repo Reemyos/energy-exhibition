@@ -90,7 +90,7 @@ async def virtual_websocket_handler(websocket: WebSocket, *args):
 
 
 @app.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket, use_virtual_port: bool = True):
+async def websocket_endpoint(websocket: WebSocket, use_virtual_port: bool = False):
     await websocket.accept()
     logger.info("WebSocket client connected.")
     serial_connection = None
