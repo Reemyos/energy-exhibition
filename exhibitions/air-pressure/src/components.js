@@ -9,14 +9,14 @@ export function DesignedGaugePin({ data, min, max }) {
   // Rotate the pin according to the data
   const angle = ((data - min) / (max - min)) * 195;
   const pointerStyle = {
-    marginTop: '-28.5%',
+    marginTop: '-75.5%',
     transform: ` rotate(${angle}deg)`,
     transformOrigin: '15% 50%',
   }
 
   return (
     <div style={pointerStyle}>
-      <img src={gaugePin} alt={'Pin'} width={'30%'} />
+      <img src={gaugePin} alt={'Pin'} width={'80%'} />
     </div>
   );
 }
@@ -33,7 +33,7 @@ export function DesignedGaugeChart({ data, min, max }) {
     position: 'relative'
   }}>
     <div>
-      <img src={gaugeBackground} alt={'Background'} width={'30%'} />
+      <img src={gaugeBackground} alt={'Background'} width={'80%'} />
     </div>
     <DesignedGaugePin data={data} min={min} max={max} />
   </div>
@@ -47,8 +47,8 @@ export const BarChartWithPNG = ({ data, min, max, strokeColor, backgroundColor }
   return (
     <div
       style={{
-        width: '400px',     // Fixed width
-        height: '500px',    // Fixed height
+        width: '50vh',
+        height: '60vh',    // Fixed height
         backgroundImage: `url(${barContainer})`,
         backgroundSize: 'contain',
         backgroundPosition: 'center bottom', // Align to bottom
@@ -63,9 +63,9 @@ export const BarChartWithPNG = ({ data, min, max, strokeColor, backgroundColor }
         style={{
           position: 'absolute',
           transform: `transformX(-50%)`,
-          bottom: '106.9px',
-          left: '45.2%',
-          width: '10.7%', // Adjust bar width percentage as needed
+          bottom: '21.8%',
+          left: '45.4%',
+          width: '10.9%', // Adjust bar width percentage as needed
           height: `${barLength}%`, // Dynamically set height based on normalized data
           backgroundColor: backgroundColor, // Bar color
           border: `3px solid ${strokeColor}`, // Adjust border width if needed

@@ -73,22 +73,22 @@ export class ExtendedApp extends BaseApp {
         }}>
           <div style={{
             display: 'flex',
-            marginLeft: '70%',
-            marginTop: '8%',
+            marginLeft: '23%',
+            marginTop: '30%',
             width: '100%',
             height: '100%'
           }}>
             <DesignedGaugeChart data={dataPoint} min={minPressure} max={maxPressure} />
           </div>
-          <p style={{ fontSize: '1.5rem', marginTop: '-11.5%' }}>{dataPoint.toFixed(1)}</p>
+          <p style={{ fontSize: '2rem', marginTop: '-33%' }}>{dataPoint.toFixed(1)}</p>
         </div>
         <div style={{
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'center',
           alignItems: 'center',
-          marginTop: '-5.3%',
-          height: '500px',
+          marginTop: '-11.5%',
+          height: '60vh',
           width: '100%'
         }}>
           <div style={{
@@ -97,23 +97,23 @@ export class ExtendedApp extends BaseApp {
             alignItems: 'center'
           }}>
             <BarChartWithPNG data={pressureToJoule(dataPoint)} min={0} max={maxBar} backgroundColor={'#70D64D'} strokeColor={'rgba(112, 214, 77, 0.7)'} />
-            <p style={{ fontSize: '1.5rem', paddingBottom: '29%', marginTop: '-15%' }}>{pressureToJoule(dataPoint).toFixed(1)}</p>
+            <p style={{ fontSize: '2rem', paddingBottom: '29%', marginTop: '-15%' }}>{pressureToJoule(dataPoint).toFixed(1)}</p>
           </div>
           <div
             style={{
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              marginLeft: '-18.5%'
+              marginLeft: '-57%'
             }}>
             <BarChartWithPNG data={pressureToCalorie(dataPoint)} min={0} max={maxBar} backgroundColor={'#B9E972'} strokeColor={'rgba(185, 233, 114, 0.7)'} />
-            <p style={{ fontSize: '1.5rem', paddingBottom: '29%', marginTop: '-15%' }}>{pressureToCalorie(dataPoint).toFixed(1)}</p>
+            <p style={{ fontSize: '2rem', paddingBottom: '29%', marginTop: '-15%' }}>{pressureToCalorie(dataPoint).toFixed(1)}</p>
           </div>
         </div>
       </div>
     );
 
-    if (dataPoint >= 0) {
+    if (dataPoint > 0) {
       return <div style={{
         height: '100vh',
         width: '100vw',
